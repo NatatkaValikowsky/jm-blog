@@ -1,0 +1,12 @@
+.ant-pagination-item-active{
+    border: none;
+}
+
+.ant-pagination-item-active a{
+    background-color: #1890ff;
+    color: #ffffff;
+}
+
+.ant-pagination-item-active a:hover{
+    color: #fff;
+}

@@ -1,0 +1,17 @@
+.pagination-block{
+  margin:20px auto 0 auto;
+  display:flex;
+  justify-content: center;
+}
+
+.loading-block{
+  width:100%;
+  min-height: 50vh;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-block{
+  margin-top: 30px;
+}
