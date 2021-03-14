@@ -24,7 +24,7 @@ interface ProfileProps{
         bio: string | null,
         image: string | null
     },
-    updateCurrentUser: (data: IFormInput) => void
+    updateCurrentUser: (data: any) => void
 }
 
 const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
