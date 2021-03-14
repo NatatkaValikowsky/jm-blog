@@ -46,3 +46,46 @@
   background-color: #52C41A;
   color: #fff;
 }
+
+.profile-block__create_article{
+  border: 1px solid #52C41A;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #52C41A;
+  padding: 6px 10px;
+  transition: .3s;
+}
+
+.profile-block__create_article:hover{
+  background-color: #52C41A;
+  color: #fff;
+}
+
+.profile-block__user-info{
+  margin:0 27px;
+}
+
+.profile-block__user-name{
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.profile-block__user-image{
+  margin-left: 13px;
+  width: 46px;
+  height: 46px;
+}
+
+.profile-block__logout{
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.75);
+  padding: 16px 18px;
+  transition: .3s;
+}
+
+.profile-block__logout:hover{
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+}
