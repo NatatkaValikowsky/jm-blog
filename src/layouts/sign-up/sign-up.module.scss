@@ -1,0 +1,119 @@
+.sign-up__body{
+  background-color: #fff;
+  box-shadow: 0 22px 106px rgba(0, 0, 0, 0.07), 0 9.19107px 44.2843px rgba(0, 0, 0, 0.0503198), 0 4.91399px 23.6765px rgba(0, 0, 0, 0.0417275), 0px 2.75474px 13.2728px rgba(0, 0, 0, 0.035), 0px 1.46302px 7.04911px rgba(0, 0, 0, 0.0282725), 0px 0.608796px 2.93329px rgba(0, 0, 0, 0.0196802);
+  border-radius: 6px;
+  border: 1px solid #D9D9D9;
+  margin: 60px auto 0 auto;
+  width:384px;
+  display:flex;
+  flex-direction: column;
+  padding: 33px 30px;
+}
+
+.sign-up__title{
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  color: #262626;
+}
+
+.sign-up__form-group{
+  margin-top: 12px;
+}
+
+.sign-up__label{
+  font-size: 14px;
+  line-height: 22px;
+  color: #262626;
+}
+
+.sign-up__input{
+  width:100%;
+  height:40px;
+  background: #FFFFFF;
+  border: 1px solid #D9D9D9;
+  border-radius: 4px;
+  padding: 5px 12px;
+  color: #262626;
+  margin-top: 3px;
+}
+
+.sign-up__input--error{
+  border-color: #F5222D;
+}
+
+.sign-up__input:focus{
+  outline: none;
+}
+
+.sign-up__input::placeholder{
+  color: #BFBFBF;
+}
+
+.sing-up__error{
+  font-size: 12px;
+  line-height: 18px;
+  color: #F5222D;
+  margin-top: 2px;
+}
+
+.sign-up__agreement{
+  margin-top: 21px;
+  padding-top: 11px;
+  border-top: 1px solid #E8E8E8;
+  position:relative;
+}
+
+.sign-up__checkbox{
+  display:none;
+}
+
+.sign-up__agreement-label{
+  font-size: 14px;
+  line-height: 22px;
+  color: #595959;
+  display:block;
+  margin-left:24px;
+}
+
+.sign-up__agreement-label:before{
+  content:"";
+  width:16px;
+  height: 16px;
+  background: #1890FF;
+  border: 1px solid #1890FF;
+  border-radius: 2px;
+  position:absolute;
+  left:0;
+  top:13px;
+  font-family: "fontello";
+  color: #fff;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.sign-up__checkbox:checked ~ .sign-up__agreement-label:before{
+  content: "\e800";
+}
+
+.sign-up__btn{
+  width:100%;
+  padding: 8px 16px;
+  background: #1890FF;
+  border-radius: 4px;
+  color: #fff;
+  border:none;
+  margin-top: 21px;
+}
+
+.sign-up__sign-in-text{
+  display: block;
+  text-align:center;
+  font-size: 12px;
+  line-height: 20px;
+  color: #8C8C8C;
+  margin-top: 4px;
+}
