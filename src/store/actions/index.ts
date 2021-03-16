@@ -14,7 +14,6 @@ export const fetchCurrentUser = (token:string) => async (dispatch : Dispatch) =>
 
     ApiService.getCurrentUser(token)
         .then(data => {
-            console.log(data);
             if(data.user){
                 dispatch({
                     type: GET_CURRENT_USER_SUCCESS,
@@ -23,7 +22,6 @@ export const fetchCurrentUser = (token:string) => async (dispatch : Dispatch) =>
             }
         })
         .catch(error => {
-            console.log(error);
             dispatch({
                 type: GET_CURRENT_USER_FAILURE
             });

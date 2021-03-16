@@ -13,6 +13,8 @@ import Article from './layouts/article';
 import SignUp from "./layouts/sign-up";
 import SignIn from "./layouts/sign-in";
 import Profile from "./layouts/profile";
+import CreateArticle from "./layouts/create-article";
+import EditArticle from "./layouts/edit-article";
 
 import RootReducer from './store/reducers';
 
@@ -31,9 +33,11 @@ ReactDOM.render(
                         <Route exact path="/" component={Articles} />
                         <Route exact path="/articles" component={Articles} />
                         <Route exact path="/articles/:slug" component={Article} />
+                        <Route exact path="/articles/:slug/edit" component={EditArticle} />
                         <Route exact path="/sign-in" component={SignIn} />
                         <Route exact path="/sign-up" component={SignUp} />
                         <Route exact path="/profile" component={Profile} />
+                        <Route exact path="/new-article" component={CreateArticle} />
                     </Switch>
                 </App>
             </CookiesProvider>

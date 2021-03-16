@@ -78,6 +78,27 @@ class ApiService {
         return this.sendRequest(`${this.apiBase}/user`, {user: data}, token, 'put')
     }
 
+    createArticle(data: {
+        title: string,
+        description: string,
+        body: string,
+        tagList: string[]
+    }, token: string){
+        return this.sendRequest(`${this.apiBase}/articles`, {article: data}, token);
+    }
+
+    updateArticle(data: {
+        title: string,
+        description: string,
+        body: string,
+        tagList: string[]
+    }, token: string, slug: string) {
+        return this.sendRequest(`${this.apiBase}/articles/${slug}`, {article: data}, token, 'put');
+    }
+
+    deleteArticle(slug:string, token:string){
+        return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, token, 'delete');
+    }
 }
 
 export default new ApiService();
