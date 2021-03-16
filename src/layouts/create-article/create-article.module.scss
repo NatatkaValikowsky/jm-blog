@@ -1,0 +1,114 @@
+.create-article__body{
+  background-color: #fff;
+  box-shadow: 0 22px 106px rgba(0, 0, 0, 0.07), 0 9.19107px 44.2843px rgba(0, 0, 0, 0.0503198), 0 4.91399px 23.6765px rgba(0, 0, 0, 0.0417275), 0px 2.75474px 13.2728px rgba(0, 0, 0, 0.035), 0px 1.46302px 7.04911px rgba(0, 0, 0, 0.0282725), 0px 0.608796px 2.93329px rgba(0, 0, 0, 0.0196802);
+  border-radius: 6px;
+  border: 1px solid #D9D9D9;
+  margin: 60px auto 0 auto;
+  width:938px;
+  display:flex;
+  flex-direction: column;
+  padding: 33px 30px;
+}
+
+.create-article__title{
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  color: #262626;
+}
+
+.create-article__form-group{
+  margin-top: 12px;
+}
+
+.create-article__label{
+  font-size: 14px;
+  line-height: 22px;
+  color: #262626;
+}
+
+.create-article__input,
+.create-article__textarea,
+.create-article__tag-input{
+  width:300px;
+  background: #FFFFFF;
+  border: 1px solid #D9D9D9;
+  border-radius: 4px;
+  padding: 5px 12px;
+  color: #262626;
+  margin-top: 3px;
+}
+
+.create-article__input,
+.create-article__textarea{
+  width:100%;
+}
+
+.create-article__input{
+  height:40px;
+}
+
+.create-article__input--error{
+  border-color: #F5222D;
+}
+
+.create-article__input:focus{
+  outline: none;
+}
+
+.create-article__input::placeholder{
+  color: #BFBFBF;
+}
+
+.create-article__error{
+  font-size: 12px;
+  line-height: 18px;
+  color: #F5222D;
+  margin-top: 2px;
+}
+
+.create-article__btn{
+  padding: 8px 16px;
+  background: #1890FF;
+  border-radius: 4px;
+  color: #fff;
+  border:none;
+  margin-top: 21px;
+}
+
+.create-article__tag-group{
+  margin-top: 5px;
+}
+
+.create-article__delete-tag{
+  border: 1px solid #F5222D;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: .3s;
+  color: #F5222D;
+}
+
+.create-article__delete-tag:hover{
+  background-color: #F5222D;
+  color: #fff;
+}
+
+.create-article__add-tag{
+  border: 1px solid #1890FF;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: .3s;
+  color: #1890FF;
+}
+
+.create-article__add-tag:hover{
+  background-color: #1890FF;
+  color: #fff;
+}

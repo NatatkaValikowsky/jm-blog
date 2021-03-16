@@ -22,7 +22,7 @@
   grid-template-areas:
     "title like author-name author-avatar"
     "tags tags date author-avatar"
-    "introtext introtext introtext introtext";
+    "introtext introtext introtext buttons";
   grid-template-columns: fit-content(50px) fit-content(50px) auto 46px;
 }
 
@@ -40,6 +40,13 @@
   display: flex;
   align-items: center;
   margin-left: 13px;
+}
+
+.buttons-block{
+  grid-area: buttons;
+  display:flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .like-block__count{
@@ -96,4 +103,93 @@
   color: rgba(0, 0, 0, 0.75);
   margin-top: 4px;
   max-width: 682px;
+}
+
+.article-text{
+  margin-top:15px;
+  padding:0 15px;
+}
+
+.buttons-block__edit{
+  text-decoration: none;
+  border: 1px solid #52C41A;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #52C41A;
+  padding: 5px 10px;
+  margin-left: 10px;
+  transition: .3s;
+}
+
+.buttons-block__edit:hover{
+  background-color: #52C41A;
+  color: #fff;
+}
+
+.buttons-block__delete{
+  text-decoration: none;
+  border: 1px solid #F5222D;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #F5222D;
+  padding: 5px 10px;
+  margin-left: 10px;
+  background-color: transparent;
+  transition: .3s;
+}
+
+.buttons-block__delete:hover{
+  background-color: #F5222D;
+  color: #fff;
+}
+
+.buttons-block{
+  position: relative;
+}
+
+.comfirm-delete{
+  position: absolute;
+  top: 0;
+  right: calc(-100% - 147px);
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15));
+  background: #FFFFFF;
+  border-radius: 4px;
+  width: 240px;
+  padding:20px;
+}
+
+.comfirm-delete__wrapper{
+  position: relative;
+}
+
+.comfirm-delete__wrapper:before{
+  content: "";
+  display:block;
+  width:15px;
+  height: 15px;
+  background-color: #fff;
+  transform: rotate(45deg);
+  position: absolute;
+  left:-25px;
+  top:-10px;
+}
+
+.buttons-block__no{
+  background: #FFFFFF;
+  border: 1px solid #D9D9D9;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: #595959;
+  padding: 5px 10px;
+  margin-right: 10px;
+}
+
+.buttons-block__yes{
+  background: #1890FF;
+  border: 1px solid #1890FF;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: #FFFFFF;
+  padding: 5px 10px;
+  margin-right: 10px;
 }

@@ -6,9 +6,24 @@ import { LoadingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import classes from "./article.module.scss";
 import likeIcon from "../../img/like-icon.svg";
+import { connect } from 'react-redux';
+import {IAppState} from "../../store/reducers/types";
+import { Link } from "react-router-dom";
+import delImg from '../../img/del-icon.svg';
+import { useCookies } from 'react-cookie';
+import { Redirect } from 'react-router';
 const { format: formatDate} = require('date-fns');
 
-const Article = () => {
+interface ArticleProps{
+    currUser: {
+        username: string,
+        email: string,
+        bio: string | null,
+        image: string | null
+    }
+}
+
+const Article:React.FC<ArticleProps> = ({currUser}) => {
 
     interface ArticleInterface {
         title: string,
@@ -40,6 +55,9 @@ const Article = () => {
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+    const [isDel, setIsDel] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
+    const [cookies,] = useCookies(['Token']);
 
     interface ParamTypes {
         slug: string
@@ -79,12 +97,22 @@ const Article = () => {
         author,
         createdAt,
         description,
-        body
+        body,
     } = content;
 
     function parseISOString(s: string) {
         if(s.length === 0) return new Date();
         return new Date(s);
+    }
+
+    const deleteArticle = () => {
+        ApiService.deleteArticle(slug, cookies.Token)
+            .then(data => {
+                setIsDeleted(true);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     const error = hasError ?
@@ -120,6 +148,35 @@ const Article = () => {
                 <p className={classes["introtext"]}>
                     {description}
                 </p>
+                {
+                    currUser && currUser.username === author.username &&
+                    <div className={classes["buttons-block"]}>
+                        <div className={classes["delete-btn-block"]}>
+                            <button
+                                className={classes["buttons-block__delete"]}
+                                type="button"
+                                onClick={()=>{setIsDel(true)}}>Delete</button>
+                            {isDel &&
+                                <div className={classes["comfirm-delete"]}>
+                                    <div className={classes["comfirm-delete__wrapper"]}>
+                                        <span className={classes["comfirm-delete__title"]}>
+                                            <img src={delImg} alt="Delete Article"/> Are you sure to delete this article?
+                                        </span>
+                                        <span className={classes["buttons-block"]}>
+                                            <button
+                                                className={classes["buttons-block__no"]}
+                                                onClick={()=>{setIsDel(false)}}>No</button>
+                                            <button
+                                                className={classes["buttons-block__yes"]}
+                                                onClick={deleteArticle}>Yes</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <Link className={classes["buttons-block__edit"]} to={`/articles/${slug}/edit`}>Edit</Link>
+                    </div>
+                }
             </div>
             <div className={classes["article-text"]}>
                 <ReactMarkdown>
@@ -127,6 +184,8 @@ const Article = () => {
                 </ReactMarkdown>
             </div>
         </div>;
+
+    if(isDeleted) return <Redirect to='/'/>
 
     return (
         <>
@@ -136,4 +195,8 @@ const Article = () => {
     );
 }
 
-export default Article;
+const mapStateToProps = (state: IAppState) => ({
+    currUser: state.currUserInfo
+});
+
+export default connect(mapStateToProps)(Article);
