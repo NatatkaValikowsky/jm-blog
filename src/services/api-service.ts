@@ -45,13 +45,13 @@ class ApiService {
         }
     }
 
-    getArticles(pageNum: number) : Promise<any> {
+    getArticles(pageNum: number, token: string) : Promise<any> {
         const offset : number = (pageNum - 1) * this.articlesOnPage;
-        return this.sendRequest(`${this.apiBase}/articles?limit=${this.articlesOnPage}&offset=${offset}`);
+        return this.sendRequest(`${this.apiBase}/articles?limit=${this.articlesOnPage}&offset=${offset}`, null, token);
     }
 
-    getArticle(slug: string) : Promise<any> {
-        return this.sendRequest(`${this.apiBase}/articles/${slug}`);
+    getArticle(slug: string, token: string) : Promise<any> {
+        return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, token);
     }
 
     createUser(data: userData){
@@ -98,6 +98,14 @@ class ApiService {
 
     deleteArticle(slug:string, token:string){
         return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, token, 'delete');
+    }
+
+    favouriteArticle(slug: string, token: string){
+        return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, token, 'post');
+    }
+
+    unfavouriteArticle(slug: string, token: string){
+        return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, token, 'delete');
     }
 }
 

@@ -94,7 +94,7 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const { slug } = useParams<ParamTypes>();
 
     const getArticle = (slug: string) => {
-        ApiService.getArticle(slug)
+        ApiService.getArticle(slug, cookies.Token)
             .then(data => {
                 setContent(data.article);
 
