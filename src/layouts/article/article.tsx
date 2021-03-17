@@ -6,6 +6,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import classes from "./article.module.scss";
 import likeIcon from "../../img/like-icon.svg";
+import likedIcon from "../../img/liked-icon.svg";
 import { connect } from 'react-redux';
 import {IAppState} from "../../store/reducers/types";
 import { Link } from "react-router-dom";
@@ -36,7 +37,8 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
         favoritesCount: number,
         createdAt: string,
         tagList: Array<string>,
-        body: string
+        body: string,
+        favorited: boolean
     }
 
     const [content, setContent] = useState<ArticleInterface>({
@@ -50,7 +52,8 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
         favoritesCount: 0,
         createdAt: "",
         tagList: [],
-        body: ""
+        body: "",
+        favorited:false
     });
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const [isLoading, setIsLoading] = useState(true);
@@ -72,7 +75,7 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
     };
 
     const getArticle = (slug: string) => {
-        ApiService.getArticle(slug)
+        ApiService.getArticle(slug, cookies.Token)
             .then(data => {
                 setContent(data.article);
             })
@@ -82,6 +85,19 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
             .finally(() => {
                 setIsLoading(false);
             });
+    }
+
+    const favouriteArticle = () =>{
+        if(!content.favorited){
+            ApiService.favouriteArticle(slug, cookies.Token)
+                .then(data => setContent(data.article))
+                .catch(error => console.log(error));
+        } else{
+            ApiService.unfavouriteArticle(slug, cookies.Token)
+                .then(data => setContent(data.article))
+                .catch(error => console.log(error));
+        }
+
     }
 
     useEffect(function (){
@@ -98,6 +114,7 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
         createdAt,
         description,
         body,
+        favorited
     } = content;
 
     function parseISOString(s: string) {
@@ -132,8 +149,9 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
         <div className={classes["article-body"]}>
             <div className={classes["article-header"]}>
                 <h1 className={classes["article-title"]}>{title}</h1>
-                <div className={classes["like-block"]}>
-                    <img className={classes["like-block__icon"]} src={likeIcon} alt="Like icon"/>
+                <div className={classes["like-block"]}
+                     onClick={cookies.Token ? favouriteArticle : ()=>{}}>
+                    <img className={classes["like-block__icon"]} src={content.favorited ? likedIcon : likeIcon} alt="Like icon"/>
                     <span className={classes["like-block__count"]}>{favoritesCount}</span>
                 </div>
 
