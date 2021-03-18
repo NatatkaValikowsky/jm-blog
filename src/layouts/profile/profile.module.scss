@@ -10,6 +10,12 @@
   padding: 33px 30px;
 }
 
+@media(max-width: 1000px){
+  .profile__body{
+    width:100%;
+  }
+}
+
 .profile__title{
   font-weight: 500;
   font-size: 20px;

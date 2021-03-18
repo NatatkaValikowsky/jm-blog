@@ -10,6 +10,12 @@
   padding: 33px 30px;
 }
 
+@media(max-width: 1000px){
+  .create-article__body{
+    width:100%;
+  }
+}
+
 .create-article__title{
   font-weight: 500;
   font-size: 20px;
@@ -38,6 +44,14 @@
   padding: 5px 12px;
   color: #262626;
   margin-top: 3px;
+}
+
+@media(max-width: 400px){
+  .create-article__input,
+  .create-article__textarea,
+  .create-article__tag-input{
+    width:100%;
+  }
 }
 
 .create-article__input,
@@ -90,6 +104,12 @@
   cursor: pointer;
   transition: .3s;
   color: #F5222D;
+}
+
+@media(max-width: 400px){
+  .create-article__delete-tag{
+    margin-top: 10px;
+  }
 }
 
 .create-article__delete-tag:hover{

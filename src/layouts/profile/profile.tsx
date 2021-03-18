@@ -62,7 +62,7 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
                 updateCurrentUser(data);
             })
             .catch(error => {
-                console.log(error);
+                alert('Error');
             })
     }
 

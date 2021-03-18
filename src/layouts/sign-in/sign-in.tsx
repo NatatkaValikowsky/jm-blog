@@ -3,8 +3,12 @@ import {Link} from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ApiService from '../../services/api-service';
 import { useCookies } from 'react-cookie';
+import {
+    fetchCurrentUser as fetchCurrentUserAction,
+} from "../../store/actions";
 import { Redirect } from 'react-router';
 import { Alert } from 'antd';
+import { connect } from 'react-redux';
 
 import classes from "./sign-in.module.scss";
 
@@ -13,7 +17,11 @@ interface IFormInput {
     password: string,
 }
 
-const SignIn = () => {
+interface SignInProps{
+    fetchCurrentUser: (token: string) => void,
+}
+
+const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
     const [hasErrors,] = useState(false);
     const [, setCookie] = useCookies(['Token']);
@@ -27,6 +35,7 @@ const SignIn = () => {
                 if(data.user){
                     const userInfo = data.user;
                     setCookie('Token', userInfo.token);
+                    fetchCurrentUser(userInfo.token);
                     setRedirect(true);
                     return;
                 }
@@ -106,4 +115,8 @@ const SignIn = () => {
     )
 }
 
-export default SignIn;
+const mapDispatchToProps = {
+    fetchCurrentUser: fetchCurrentUserAction,
+}
+
+export default connect(null, mapDispatchToProps)(SignIn);

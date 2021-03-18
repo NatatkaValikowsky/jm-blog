@@ -57,6 +57,7 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const [titleState, setTitleState] = useState('');
     const [descrState, setDescrState] = useState('');
     const [bodyState, setBodyState] = useState('');
+    const [isRedirect, setIsRedirect] = useState(false);
 
     const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
@@ -126,6 +127,10 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
         );
     }
 
+    if(isRedirect){
+        return <Redirect to="/" />
+    }
+
     const onSubmit = async (formData: IFormInput) => {
        const tagList:string[] = tags.reduce((acc:string[], el: {id:number, value:string}) => [...acc, el.value], []);
         const dataToSend = {
@@ -137,10 +142,10 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
 
         ApiService.updateArticle(dataToSend, cookies.Token, slug)
             .then(data => {
-                console.log(data);
+                setIsRedirect(true);
             })
             .catch(error => {
-                console.log(error);
+                alert('Error');
             })
     }
 

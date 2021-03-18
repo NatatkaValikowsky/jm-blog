@@ -7,6 +7,7 @@ import likeIcon from "../../img/like-icon.svg";
 import likedIcon from "../../img/liked-icon.svg";
 import {format} from "date-fns";
 import ApiService from "../../services/api-service";
+import {cutWords} from "../../utils";
 
 interface ArticleInterface {
     title: string,
@@ -53,18 +54,18 @@ const Article:React.FC<ArticleInterface> = ({
         if(!content.favorited){
             ApiService.favouriteArticle(slug, cookies.Token)
                 .then(data => setContent(data.article))
-                .catch(error => console.log(error));
+                .catch(error => alert('Error'));
         } else{
             ApiService.unfavouriteArticle(slug, cookies.Token)
                 .then(data => setContent(data.article))
-                .catch(error => console.log(error));
+                .catch(error => alert('Error'));
         }
 
     }
 
     return (
         <li key={content.slug} className={classnames(classes["articles-list__item"], classes["article-item"])}>
-            <Link to={`/articles/${content.slug}`} className={classes["article-item__title"]}>{content.title}</Link>
+            <Link to={`/articles/${content.slug}`} className={classes["article-item__title"]}>{cutWords(content.title, 30)}</Link>
             <div
                 className={classnames(classes["article-item__like-block"], classes["like-block"])}
                 onClick={cookies.Token ? favouriteArticle : ()=>{}}>

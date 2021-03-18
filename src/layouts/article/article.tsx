@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import delImg from '../../img/del-icon.svg';
 import { useCookies } from 'react-cookie';
 import { Redirect } from 'react-router';
+import {cutWords} from "../../utils";
 const { format: formatDate} = require('date-fns');
 
 interface ArticleProps{
@@ -91,11 +92,11 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
         if(!content.favorited){
             ApiService.favouriteArticle(slug, cookies.Token)
                 .then(data => setContent(data.article))
-                .catch(error => console.log(error));
+                .catch(error => alert('Error'));
         } else{
             ApiService.unfavouriteArticle(slug, cookies.Token)
                 .then(data => setContent(data.article))
-                .catch(error => console.log(error));
+                .catch(error => alert('Error'));
         }
 
     }
@@ -128,7 +129,7 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
                 setIsDeleted(true);
             })
             .catch(error => {
-                console.log(error);
+                alert('Error');
             });
     }
 
@@ -148,7 +149,7 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
         </div> :
         <div className={classes["article-body"]}>
             <div className={classes["article-header"]}>
-                <h1 className={classes["article-title"]}>{title}</h1>
+                <h1 className={classes["article-title"]}>{cutWords(title, 30)}</h1>
                 <div className={classes["like-block"]}
                      onClick={cookies.Token ? favouriteArticle : ()=>{}}>
                     <img className={classes["like-block__icon"]} src={content.favorited ? likedIcon : likeIcon} alt="Like icon"/>

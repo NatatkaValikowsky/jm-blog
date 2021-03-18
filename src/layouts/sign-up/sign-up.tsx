@@ -37,7 +37,7 @@ const SignUp = () => {
 
     }
 
-    if(isRedirect) return <Redirect to='/'/>
+    if(isRedirect) return <Redirect to='/sign-in'/>
 
     return (
         <div className={classes["sign-up__body"]}>

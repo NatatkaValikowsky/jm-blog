@@ -30,6 +30,7 @@ interface IFormInput {
 const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IFormInput>();
     const [cookies,] = useCookies(['Token']);
+    const [isRedirect, setIsRedirect] = useState(false);
     const [tags, setTags] = useState([
         {
             id: 1,
@@ -47,6 +48,10 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
         );
     }
 
+    if(isRedirect){
+        return <Redirect to="/" />
+    }
+
     const onSubmit = async (formData: IFormInput) => {
 
         const tagList:string[] = tags.reduce((acc:string[], el: {id:number, value:string}) => [...acc, el.value], []);
@@ -59,10 +64,10 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
 
         ApiService.createArticle(dataToSend, cookies.Token)
             .then(data => {
-                console.log(data);
+                setIsRedirect(true);
             })
             .catch(error => {
-                console.log(error);
+                alert('Error');
             });
     }
 

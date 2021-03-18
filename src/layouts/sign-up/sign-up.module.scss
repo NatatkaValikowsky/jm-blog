@@ -10,6 +10,12 @@
   padding: 33px 30px;
 }
 
+@media(max-width: 500px){
+  .sign-up__body{
+    width:100%;
+  }
+}
+
 .sign-up__title{
   font-weight: 500;
   font-size: 20px;

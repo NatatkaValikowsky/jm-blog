@@ -10,6 +10,12 @@
   padding: 33px 30px;
 }
 
+@media(max-width: 1000px){
+  .edit-article__body{
+    width:100%;
+  }
+}
+
 .edit-article__title{
   font-weight: 500;
   font-size: 20px;
@@ -90,6 +96,12 @@
   cursor: pointer;
   transition: .3s;
   color: #F5222D;
+}
+
+@media(max-width: 400px){
+  .edit-article__delete-tag{
+    margin-top: 10px;
+  }
 }
 
 .edit-article__delete-tag:hover{

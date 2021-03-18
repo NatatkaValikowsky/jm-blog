@@ -26,6 +26,20 @@
   grid-template-columns: fit-content(50px) fit-content(50px) auto 46px;
 }
 
+@media(max-width: 600px){
+  .article-header{
+    grid-template-areas:
+    "title title"
+    "tags tags"
+    "author-avatar author-name"
+    "author-avatar date"
+    "like buttons"
+    "introtext introtext";
+    grid-template-columns: 46px calc(100% - 46px);
+    position: relative;
+  }
+}
+
 .article-title{
   grid-area: title;
   white-space: nowrap;
@@ -33,6 +47,14 @@
   color: #1890FF;
   text-decoration: none;
   margin-bottom: 0;
+  word-break: break-word;
+}
+
+
+@media(max-width: 600px){
+  .article-title{
+    padding-right:50px;
+  }
 }
 
 .like-block{
@@ -50,6 +72,13 @@
   justify-content: flex-end;
 }
 
+@media(max-width: 600px){
+  .buttons-block{
+    justify-content: flex-start;
+    margin:10px 0;
+  }
+}
+
 .like-block__count{
   margin-left: 5px;
 }
@@ -61,12 +90,25 @@
   display: flex;
 }
 
+@media(max-width: 600px){
+  .tags-list{
+    margin-bottom: 10px;
+  }
+}
+
 .author-name{
   grid-area: author-name;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   margin-right: 12px;
+}
+
+@media(max-width: 600px){
+  .author-name{
+    justify-content: flex-start;
+    padding-left:10px;
+  }
 }
 
 .publication-date{
@@ -76,6 +118,13 @@
   font-size: 12px;
   color: rgba(0, 0, 0, 0.5);
   margin-right: 12px;
+}
+
+@media(max-width: 600px){
+  .publication-date{
+    justify-content: flex-start;
+    padding-left:10px;
+  }
 }
 
 .author-avatar{
@@ -97,7 +146,7 @@
   margin-right: 8px;
 }
 
-.article-item__introtext{
+.introtext{
   grid-area: introtext;
   font-size: 12px;
   line-height: 22px;
@@ -106,9 +155,16 @@
   max-width: 682px;
 }
 
+@media(max-width: 600px){
+  .introtext{
+    margin-top: 20px;
+  }
+}
+
 .article-text{
   margin-top:15px;
   padding:0 15px;
+  word-break: break-all;
 }
 
 .buttons-block__edit{
@@ -159,6 +215,14 @@
   padding:20px;
 }
 
+@media(max-width: 600px){
+  .comfirm-delete{
+    top:calc(100% + 20px);
+    right: auto;
+    left:0;
+  }
+}
+
 .comfirm-delete__wrapper{
   position: relative;
 }
@@ -173,6 +237,13 @@
   position: absolute;
   left:-25px;
   top:-10px;
+}
+
+@media(max-width: 600px){
+  .comfirm-delete__wrapper:before{
+    top:-25px;
+    left:10px;
+  }
 }
 
 .buttons-block__no{

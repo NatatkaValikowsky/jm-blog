@@ -10,6 +10,12 @@
   padding: 33px 30px;
 }
 
+@media(max-width: 500px){
+  .sign-in__body{
+    width:100%;
+  }
+}
+
 .sign-in__title{
   font-weight: 500;
   font-size: 20px;
