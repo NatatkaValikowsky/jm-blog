@@ -7,6 +7,9 @@ import ApiService from "../../services/api-service";
 import {IAppState} from "../../store/reducers/types";
 import { Redirect } from 'react-router';
 import { useCookies } from 'react-cookie';
+import { Spin} from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import classnames from "classnames";
 
 interface EditArticleProps{
     currUser: {
@@ -44,6 +47,8 @@ interface ArticleInterface {
 const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IFormInput>();
     const [cookies,] = useCookies(['Token']);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const [tags, setTags] = useState([
         {
             id: 1,
@@ -132,6 +137,9 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     }
 
     const onSubmit = async (formData: IFormInput) => {
+
+        if(formIsSending) return;
+
        const tagList:string[] = tags.reduce((acc:string[], el: {id:number, value:string}) => [...acc, el.value], []);
         const dataToSend = {
             title: formData.title,
@@ -140,12 +148,17 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
             tagList
         };
 
+        setFormIsSending(true);
+
         ApiService.updateArticle(dataToSend, cookies.Token, slug)
             .then(data => {
                 setIsRedirect(true);
             })
             .catch(error => {
                 alert('Error');
+            })
+            .finally(() => {
+                setFormIsSending(false);
             })
     }
 
@@ -273,7 +286,11 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
                     }
                 </div>
 
-                <button type="submit" className={classes["edit-article__btn"]}>Send</button>
+                <button type="submit" className={classnames(classes["edit-article__btn"], {[classes["edit-article__btn--is-sending"]]: formIsSending})}>
+                    {formIsSending ?
+                        <Spin indicator={antIcon} /> :
+                        `Send`}
+                </button>
             </form>
         </div>
     );

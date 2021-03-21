@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import ApiService from '../../services/api-service';
 import { useCookies } from 'react-cookie';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import classes from './create-article.module.scss';
 import {IAppState} from "../../store/reducers/types";
+import classnames from "classnames";
 
 interface CreateArticleProps{
     currUser: {
@@ -31,6 +34,8 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IFormInput>();
     const [cookies,] = useCookies(['Token']);
     const [isRedirect, setIsRedirect] = useState(false);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const [tags, setTags] = useState([
         {
             id: 1,
@@ -54,6 +59,8 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
 
     const onSubmit = async (formData: IFormInput) => {
 
+        if(formIsSending) return;
+
         const tagList:string[] = tags.reduce((acc:string[], el: {id:number, value:string}) => [...acc, el.value], []);
         const dataToSend = {
             title: formData.title,
@@ -62,13 +69,18 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
             tagList
         };
 
+        setFormIsSending(true);
+
         ApiService.createArticle(dataToSend, cookies.Token)
             .then(data => {
                 setIsRedirect(true);
             })
             .catch(error => {
                 alert('Error');
-            });
+            })
+            .finally(() => {
+                setFormIsSending(false);
+            })
     }
 
     const addTag = () => {
@@ -181,7 +193,13 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
                         })
                     }
                 </div>
-                <button type="submit" className={classes["create-article__btn"]}>Send</button>
+                <button type="submit"
+                        className={classnames(classes["create-article__btn"], {[classes["create-article__btn--is-sending"]]: formIsSending})}>
+
+                        {formIsSending ?
+                            <Spin indicator={antIcon} /> :
+                            `Send`}
+                </button>
             </form>
         </div>
     );

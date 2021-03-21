@@ -8,6 +8,7 @@ import likedIcon from "../../img/liked-icon.svg";
 import {format} from "date-fns";
 import ApiService from "../../services/api-service";
 import {cutWords} from "../../utils";
+import { Redirect } from 'react-router';
 
 interface ArticleInterface {
     title: string,
@@ -34,6 +35,7 @@ const Article:React.FC<ArticleInterface> = ({
                      tagList}) => {
 
     const [cookies,] = useCookies(['Token']);
+    const [isRedirect, setIsRedirect] = useState(false);
     const [content, setContent] = useState({
         title,
         slug,
@@ -51,6 +53,11 @@ const Article:React.FC<ArticleInterface> = ({
     };
 
     const favouriteArticle = () =>{
+        if(!cookies.Token){
+            setIsRedirect(true);
+            return;
+        }
+
         if(!content.favorited){
             ApiService.favouriteArticle(slug, cookies.Token)
                 .then(data => setContent(data.article))
@@ -63,12 +70,14 @@ const Article:React.FC<ArticleInterface> = ({
 
     }
 
+    if(isRedirect) return <Redirect to={`/sign-in`}/>
+
     return (
         <li key={content.slug} className={classnames(classes["articles-list__item"], classes["article-item"])}>
             <Link to={`/articles/${content.slug}`} className={classes["article-item__title"]}>{cutWords(content.title, 30)}</Link>
             <div
                 className={classnames(classes["article-item__like-block"], classes["like-block"])}
-                onClick={cookies.Token ? favouriteArticle : ()=>{}}>
+                onClick={favouriteArticle}>
                 <img className={classes["like-block__icon"]} src={content.favorited ? likedIcon : likeIcon} alt="Like icon"/>
                 <span className={classes["like-block__count"]}>{content.favoritesCount}</span>
             </div>

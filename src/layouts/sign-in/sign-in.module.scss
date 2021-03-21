@@ -74,6 +74,7 @@
   color: #fff;
   border:none;
   margin-top: 21px;
+  cursor: pointer;
 }
 
 .sign-in__sign-in-text{
@@ -85,6 +86,12 @@
   margin-top: 4px;
 }
 
-.error-block{
+.error-block,
+.success-block{
   margin-top: 20px;
+}
+
+.sign-in__btn--is-sending{
+  background-color: rgba(0,0,0,.1);
+  cursor: default;
 }

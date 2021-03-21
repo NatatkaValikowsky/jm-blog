@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import { connect } from 'react-redux';
 import { useCookies } from 'react-cookie';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import ApiService from '../../services/api-service';
 import {
     updateCurrentUser as updateCurrentUserAction
@@ -9,6 +11,7 @@ import {
 
 import classes from "./profile.module.scss";
 import { IAppState } from '../../store/reducers/types';
+import classnames from "classnames";
 
 interface IFormInput {
     username: string,
@@ -32,6 +35,8 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     const [cookies,] = useCookies(['Token']);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [formIsSending, setFormIsSending] = useState(false);
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
     const onChangeUsername = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
@@ -44,6 +49,9 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     }
 
     const onSubmit = async (formData: IFormInput) => {
+
+        if(formIsSending) return;
+
         const dataToSend:IFormInput = {
             username: formData.username,
             email: formData.email
@@ -57,6 +65,8 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
             dataToSend.image = formData.image;
         }
 
+        setFormIsSending(true);
+
         ApiService.updateUserData(dataToSend, cookies.Token)
             .then(data => {
                 updateCurrentUser(data);
@@ -64,6 +74,9 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
             .catch(error => {
                 alert('Error');
             })
+            .finally(() => {
+                setFormIsSending(false);
+            });
     }
 
     return (
@@ -174,7 +187,12 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
                     <span className={classes["profile__error"]}>{errors.image && `Invalid url`}</span>
                 </div>
 
-                <button type="submit" className={classes["profile__btn"]}>Save</button>
+                <button type="submit"
+                        className={classnames(classes["profile__btn"], {[classes["profile__btn--is-sending"]]: formIsSending})}>
+                        {formIsSending ?
+                            <Spin indicator={antIcon} /> :
+                            `Save`}
+                </button>
             </form>
         </div>
     );

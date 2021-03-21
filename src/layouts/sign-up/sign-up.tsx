@@ -5,6 +5,8 @@ import ApiService from '../../services/api-service';
 import classnames from "classnames";
 import { Redirect } from 'react-router';
 import { useCookies } from 'react-cookie';
+import { Spin, Alert } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import classes from './sign-up.module.scss';
 
@@ -20,20 +22,25 @@ const SignUp = () => {
     const { register, errors, handleSubmit, getValues } = useForm<IFormInput>();
     const [isRedirect, setRedirect] = useState(false);
     const [, setCookie] = useCookies(['Token']);
+    const [, setSignedUp] = useCookies(['Signed-up']);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
     const onSubmit = async (formData: IFormInput) => {
 
+        if(formIsSending) return;
+
+        setFormIsSending(true);
+
         const data = await ApiService.createUser(formData);
         if(data.user){
-            const userInfo = data.user;
-            await ApiService.loginUser({
-                email: userInfo.email,
-                password: formData.password
-            });
-            setCookie('Token', userInfo.token);
+            setSignedUp('SignedUp', true);
             setRedirect(true);
+            setFormIsSending(false);
             return;
         }
+
+        setFormIsSending(false);
 
     }
 
@@ -157,7 +164,11 @@ const SignUp = () => {
                     <span className={classes["sing-up__error"]}>{errors.agreement?.message}</span>
                 </div>
 
-                <button type="submit" className={classes["sign-up__btn"]}>Create</button>
+                <button type="submit" className={classnames(classes["sign-up__btn"], {[classes["sign-up__btn--is-sending"]]: formIsSending})}>
+                    {formIsSending ?
+                        <Spin indicator={antIcon} /> :
+                        `Create`}
+                </button>
                 <span className={classes["sign-up__sign-in-text"]}>Already have an account? <Link to={`/sign-in`} className={classes["sign-up__sign-in-link"]}>Sign In.</Link></span>
             </form>
         </div>

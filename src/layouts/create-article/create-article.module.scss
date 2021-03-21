@@ -89,6 +89,7 @@
   color: #fff;
   border:none;
   margin-top: 21px;
+  cursor: pointer;
 }
 
 .create-article__tag-group{
@@ -131,4 +132,9 @@
 .create-article__add-tag:hover{
   background-color: #1890FF;
   color: #fff;
+}
+
+.create-article__btn--is-sending{
+  background-color: rgba(0,0,0,.1);
+  cursor: default;
 }

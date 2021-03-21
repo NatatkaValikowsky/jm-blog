@@ -2,15 +2,17 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ApiService from '../../services/api-service';
+import { Spin, Alert } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { useCookies } from 'react-cookie';
 import {
     fetchCurrentUser as fetchCurrentUserAction,
 } from "../../store/actions";
 import { Redirect } from 'react-router';
-import { Alert } from 'antd';
 import { connect } from 'react-redux';
 
 import classes from "./sign-in.module.scss";
+import classnames from "classnames";
 
 interface IFormInput {
     email: string,
@@ -25,11 +27,18 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
     const [hasErrors,] = useState(false);
     const [, setCookie] = useCookies(['Token']);
+    const [signedUp,, removeSignedUp] = useCookies(['Signed-up']);
     const [isRedirect, setRedirect] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
     const onSubmit = async (formData: IFormInput) => {
+
+        if(formIsSending) return;
+
         setHasError(false);
+        setFormIsSending(true);
         ApiService.loginUser(formData)
             .then(data => {
                 if(data.user){
@@ -42,6 +51,9 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
             })
             .catch(error => {
                 setHasError(true);
+            })
+            .finally(() => {
+                setFormIsSending(false);
             });
     }
 
@@ -57,8 +69,22 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
             />
         </div> : null;
 
+    const isSignedUp = signedUp.SignedUp ?
+        <div className={classes["success-block"]}>
+            <Alert
+                message="Вы успешно зарегистрировались"
+                description="Для продолжения работы нужно авторизоваться"
+                type="success"
+                closable
+            />
+        </div> : null;
+
+    if(signedUp.SignedUp){
+        removeSignedUp('SignedUp');
+    }
     return (
         <>
+            { isSignedUp }
             { error }
             <div className={classes["sign-in__body"]}>
                 <h1 className={classes["sign-in__title"]}>Sign In</h1>
@@ -85,7 +111,6 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
                             )}/>
                         <span className={classes["sing-in__error"]}>{errors.email?.message}</span>
                     </div>
-
                     <div className={classes["sign-in__form-group"]}>
                         <label className={classes["sign-in__label"]} htmlFor="password">Password</label>
                         <input
@@ -104,10 +129,16 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
                             )}/>
                         <span className={classes["sing-in__error"]}>{errors.password?.message}</span>
                     </div>
-
                     <span className={classes["sing-in__error"]}>{hasErrors ? `Incorrect email or password.` : null}</span>
 
-                    <button type="submit" className={classes["sign-in__btn"]}>Login</button>
+                    <button type="submit"
+                            className={classnames(classes["sign-in__btn"], {[classes["sign-in__btn--is-sending"]]: formIsSending})}>
+
+                            {formIsSending ?
+                            <Spin indicator={antIcon} /> :
+                            `Login`}
+
+                    </button>
                     <span className={classes["sign-in__sign-in-text"]}>Don’t have an account? <Link to={`/sign-up`} className={classes["sign-in__sign-up-link"]}>Sign Up.</Link></span>
                 </form>
             </div>
