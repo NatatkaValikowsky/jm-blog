@@ -150,7 +150,6 @@ const SignUp = () => {
                         id="agreement_checkbox"
                         type="checkbox"
                         className={classes["sign-up__checkbox"]}
-                        checked
                         ref={register(
                             {
                                 required: {
