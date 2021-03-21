@@ -87,7 +87,7 @@
   content:"";
   width:16px;
   height: 16px;
-  background: #1890FF;
+  background: #fff;
   border: 1px solid #1890FF;
   border-radius: 2px;
   position:absolute;
@@ -103,6 +103,7 @@
 
 .sign-up__checkbox:checked ~ .sign-up__agreement-label:before{
   content: "\e800";
+  background: #1890FF;
 }
 
 .sign-up__btn{
@@ -127,4 +128,8 @@
 .sign-up__btn--is-sending{
   background-color: rgba(0,0,0,.1);
   cursor: default;
+}
+
+.server-errors-block{
+  margin-top: 20px;
 }

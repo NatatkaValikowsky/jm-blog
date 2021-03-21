@@ -37,9 +37,7 @@ class ApiService {
 
         try {
             const res = await fetch(url, sendData);
-            if(res.ok){
-                return await res.json();
-            }
+            return await res.json();
         } catch (error) {
             throw new Error(`Could not connect to API`);
         }
@@ -55,9 +53,10 @@ class ApiService {
     }
 
     createUser(data: userData){
+        console.log(data);
         return this.sendRequest(`${this.apiBase}/users`, {
             user: data
-        });
+        }, undefined, 'post');
     }
 
     loginUser(data:userData){
