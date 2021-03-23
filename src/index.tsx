@@ -11,11 +11,11 @@ import RouteService from "./services/route-service";
 import App from './components/app';
 import Articles from './layouts/articles';
 import Article from './layouts/article';
-import SignUp from "./layouts/sign-up";
-import SignIn from "./layouts/sign-in";
-import Profile from "./layouts/profile";
-import CreateArticle from "./layouts/create-article";
-import EditArticle from "./layouts/edit-article";
+import SignUp from "./components/sign-up";
+import SignIn from "./components/sign-in";
+import Profile from "./components/profile";
+import CreateArticle from "./components/create-article";
+import EditArticle from "./components/edit-article";
 
 import RootReducer from './store/reducers';
 
