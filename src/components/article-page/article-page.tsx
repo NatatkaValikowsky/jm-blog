@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Spin, Alert } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
-import classes from "./article.module.scss";
+import classes from "./article-page.module.scss";
 import likeIcon from "../../img/like-icon.svg";
 import likedIcon from "../../img/liked-icon.svg";
 import { connect } from 'react-redux';
@@ -25,7 +25,7 @@ interface ArticleProps{
     }
 }
 
-const Article:React.FC<ArticleProps> = ({currUser}) => {
+const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
 
     interface ArticleInterface {
         title: string,
@@ -218,4 +218,4 @@ const mapStateToProps = (state: IAppState) => ({
     currUser: state.currUserInfo
 });
 
-export default connect(mapStateToProps)(Article);
+export default connect(mapStateToProps)(ArticlePage);

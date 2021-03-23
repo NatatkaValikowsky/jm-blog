@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import { Pagination, Spin, Alert } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import ArticlesList from "../../components/articles-list";
+import ArticlesList from "../articles-list";
 
 import classes from './articles.module.scss';
 import './articles.css';

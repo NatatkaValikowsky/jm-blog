@@ -9,8 +9,8 @@ import thunk from "redux-thunk";
 import RouteService from "./services/route-service";
 
 import App from './components/app';
-import Articles from './layouts/articles';
-import Article from './layouts/article';
+import Articles from './components/articles';
+import Article from './components/article-page';
 import SignUp from "./components/sign-up";
 import SignIn from "./components/sign-in";
 import Profile from "./components/profile";
