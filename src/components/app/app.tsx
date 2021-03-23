@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import Header from '../header/header';
 import './app.css';
 import {fetchCurrentUser as fetchCurrentUserAction, removeCurrentUser as removeCurrentUserAction} from '../../store/actions';
+import ApiService from "../../services/api-service";
 import { IAppState } from '../../store/types';
 
 interface AppProps{
-    fetchCurrentUser: (token: string) => void,
+    fetchCurrentUser: () => void,
     removeCurrentUser: () => void,
     children: React.ReactNode,
     currUser: {
@@ -28,7 +29,8 @@ const App: React.FC<AppProps> = ({
 
     useEffect(function (){
         if(cookies.Token){
-            fetchCurrentUser(cookies.Token);
+            ApiService.token = cookies.Token;
+            fetchCurrentUser();
         }
     }, []);
 

@@ -10,10 +10,10 @@ import {
     UPDATE_CURRENT_USER
 } from "../constants";
 
-export const fetchCurrentUser = (token:string) => async (dispatch : Dispatch) => {
+export const fetchCurrentUser = () => async (dispatch : Dispatch) => {
     dispatch({type: GET_CURRENT_USER_START});
 
-    ApiService.getCurrentUser(token)
+    ApiService.getCurrentUser()
         .then(data => {
             if(data.user){
                 dispatch({

@@ -3,7 +3,6 @@ import ApiService from '../../services/api-service';
 import 'antd/dist/antd.css';
 import { Pagination, Spin, Alert } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useCookies } from 'react-cookie';
 
 import ArticlesList from "../../components/articles-list";
 
@@ -18,12 +17,11 @@ const Articles= () => {
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
-    const [cookies,] = useCookies(['Token']);
 
     const getArticles = (pageNum: number) => {
         setIsLoading(true);
         setHasError(false);
-        ApiService.getArticles(pageNum, cookies.Token)
+        ApiService.getArticles(pageNum)
             .then((data) => {
                 setArticles(data.articles);
                 setArticlesCount(data.articlesCount);

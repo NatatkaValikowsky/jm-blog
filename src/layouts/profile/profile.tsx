@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {connect} from 'react-redux';
-import {useCookies} from 'react-cookie';
 import {Spin} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import ApiService from '../../services/api-service';
@@ -12,10 +11,11 @@ import {IAppState} from '../../store/types';
 import classnames from "classnames";
 
 interface IFormInput {
-    username: string,
+    username?: string,
     email: string,
     password?: string,
-    image?: string
+    bio?: string | null,
+    image?:string | null
 }
 
 interface ProfileProps{
@@ -30,7 +30,6 @@ interface ProfileProps{
 
 const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
-    const [cookies,] = useCookies(['Token']);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [formIsSending, setFormIsSending] = useState(false);
@@ -70,7 +69,7 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
 
         setFormIsSending(true);
 
-        ApiService.updateUserData(dataToSend, cookies.Token)
+        ApiService.updateUserData(dataToSend)
             .then(data => {
                 updateCurrentUser(data);
             })

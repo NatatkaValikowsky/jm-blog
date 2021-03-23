@@ -20,7 +20,7 @@ interface IFormInput {
 }
 
 interface SignInProps{
-    fetchCurrentUser: (token: string) => void,
+    fetchCurrentUser: () => void,
 }
 
 const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
@@ -44,7 +44,7 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
                 if(data.user){
                     const userInfo = data.user;
                     setCookie('Token', userInfo.token);
-                    fetchCurrentUser(userInfo.token);
+                    fetchCurrentUser();
                     setRedirect(true);
                     return;
                 }

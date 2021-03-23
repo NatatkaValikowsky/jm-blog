@@ -6,7 +6,6 @@ import {useParams} from 'react-router-dom';
 import ApiService from "../../services/api-service";
 import {IAppState} from "../../store/types";
 import {Redirect} from 'react-router';
-import {useCookies} from 'react-cookie';
 import {Spin} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import classnames from "classnames";
@@ -46,7 +45,6 @@ interface ArticleInterface {
 
 const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IFormInput>();
-    const [cookies,] = useCookies(['Token']);
     const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const [tags, setTags] = useState([
@@ -101,7 +99,7 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const { slug } = useParams<ParamTypes>();
 
     const getArticle = (slug: string) => {
-        ApiService.getArticle(slug, cookies.Token)
+        ApiService.getArticle(slug)
             .then(data => {
                 setContent(data.article);
 
@@ -152,7 +150,7 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
 
         setFormIsSending(true);
 
-        ApiService.updateArticle(dataToSend, cookies.Token, slug)
+        ApiService.updateArticle(dataToSend, slug)
             .then(data => {
                 setIsRedirect(true);
             })

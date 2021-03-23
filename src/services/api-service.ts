@@ -1,9 +1,16 @@
 interface userData {
     username?: string,
     email: string,
-    password: string,
+    password?: string,
     bio?: string | null,
     image?:string | null
+}
+
+interface  articleData {
+    title: string,
+    description: string,
+    body: string,
+    tagList: string[]
 }
 
 interface requestData {
@@ -12,13 +19,21 @@ interface requestData {
     body?:string
 }
 
+type valueType = {user:userData} | {article:articleData} | null
+
 class ApiService {
     apiBase = 'https://conduit.productionready.io/api';
     apiKey = '1a312659d57cbdc19acab57a112fc99f';
 
     public articlesOnPage = 5;
 
-    async sendRequest(url: string, value?: any, token?: string, method?: string): Promise<any> {
+    private apiToken : string | undefined = undefined;
+
+    set token(token: string){
+        this.apiToken = token;
+    }
+
+    async sendRequest(url: string, value? : valueType, token?: string, method?: string): Promise<any> {
 
         const headers  = new Headers({'Content-Type': 'application/json;charset=utf-8'});
 
@@ -45,17 +60,16 @@ class ApiService {
         }
     }
 
-    getArticles(pageNum: number, token: string) : Promise<any> {
+    getArticles(pageNum: number) : Promise<any> {
         const offset : number = (pageNum - 1) * this.articlesOnPage;
-        return this.sendRequest(`${this.apiBase}/articles?limit=${this.articlesOnPage}&offset=${offset}`, null, token);
+        return this.sendRequest(`${this.apiBase}/articles?limit=${this.articlesOnPage}&offset=${offset}`, null, this.apiToken);
     }
 
-    getArticle(slug: string, token: string) : Promise<any> {
-        return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, token);
+    getArticle(slug: string) : Promise<any> {
+        return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, this.apiToken);
     }
 
     createUser(data: userData){
-        console.log(data);
         return this.sendRequest(`${this.apiBase}/users`, {
             user: data
         }, undefined, 'post');
@@ -67,46 +81,32 @@ class ApiService {
         });
     }
 
-    getCurrentUser(token: string){
-        return this.sendRequest(`${this.apiBase}/user`, false, token);
+    getCurrentUser(){
+        return this.sendRequest(`${this.apiBase}/user`, null, this.apiToken);
     }
 
-    updateUserData(data: {
-        username: string,
-        email: string,
-        password?: string,
-        image?: string}, token:string){
-        return this.sendRequest(`${this.apiBase}/user`, {user: data}, token, 'put')
+    updateUserData(data: userData){
+        return this.sendRequest(`${this.apiBase}/user`, {user: data}, this.apiToken, 'put')
     }
 
-    createArticle(data: {
-        title: string,
-        description: string,
-        body: string,
-        tagList: string[]
-    }, token: string){
-        return this.sendRequest(`${this.apiBase}/articles`, {article: data}, token);
+    createArticle(data: articleData){
+        return this.sendRequest(`${this.apiBase}/articles`, {article: data}, this.apiToken);
     }
 
-    updateArticle(data: {
-        title: string,
-        description: string,
-        body: string,
-        tagList: string[]
-    }, token: string, slug: string) {
-        return this.sendRequest(`${this.apiBase}/articles/${slug}`, {article: data}, token, 'put');
+    updateArticle(data: articleData, slug: string) {
+        return this.sendRequest(`${this.apiBase}/articles/${slug}`, {article: data}, this.apiToken, 'put');
     }
 
-    deleteArticle(slug:string, token:string){
-        return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, token, 'delete');
+    deleteArticle(slug:string){
+        return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, this.apiToken, 'delete');
     }
 
-    favouriteArticle(slug: string, token: string){
-        return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, token, 'post');
+    favouriteArticle(slug: string){
+        return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, this.apiToken, 'post');
     }
 
-    unfavouriteArticle(slug: string, token: string){
-        return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, token, 'delete');
+    unfavouriteArticle(slug: string){
+        return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, this.apiToken, 'delete');
     }
 }
 

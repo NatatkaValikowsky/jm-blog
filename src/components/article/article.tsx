@@ -59,11 +59,11 @@ const Article:React.FC<ArticleInterface> = ({
         }
 
         if(!content.favorited){
-            ApiService.favouriteArticle(slug, cookies.Token)
+            ApiService.favouriteArticle(slug)
                 .then(data => setContent(data.article))
                 .catch(error => alert('Error'));
         } else{
-            ApiService.unfavouriteArticle(slug, cookies.Token)
+            ApiService.unfavouriteArticle(slug)
                 .then(data => setContent(data.article))
                 .catch(error => alert('Error'));
         }

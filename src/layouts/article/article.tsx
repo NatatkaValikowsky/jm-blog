@@ -76,7 +76,7 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
     };
 
     const getArticle = (slug: string) => {
-        ApiService.getArticle(slug, cookies.Token)
+        ApiService.getArticle(slug)
             .then(data => {
                 setContent(data.article);
             })
@@ -90,11 +90,11 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
 
     const favouriteArticle = () =>{
         if(!content.favorited){
-            ApiService.favouriteArticle(slug, cookies.Token)
+            ApiService.favouriteArticle(slug)
                 .then(data => setContent(data.article))
                 .catch(error => alert('Error'));
         } else{
-            ApiService.unfavouriteArticle(slug, cookies.Token)
+            ApiService.unfavouriteArticle(slug)
                 .then(data => setContent(data.article))
                 .catch(error => alert('Error'));
         }
@@ -124,7 +124,7 @@ const Article:React.FC<ArticleProps> = ({currUser}) => {
     }
 
     const deleteArticle = () => {
-        ApiService.deleteArticle(slug, cookies.Token)
+        ApiService.deleteArticle(slug)
             .then(data => {
                 setIsDeleted(true);
             })

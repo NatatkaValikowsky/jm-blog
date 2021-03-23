@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import ApiService from '../../services/api-service';
-import { useCookies } from 'react-cookie';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -32,7 +31,6 @@ interface IFormInput {
 
 const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IFormInput>();
-    const [cookies,] = useCookies(['Token']);
     const [isRedirect, setIsRedirect] = useState(false);
     const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -71,7 +69,7 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
 
         setFormIsSending(true);
 
-        ApiService.createArticle(dataToSend, cookies.Token)
+        ApiService.createArticle(dataToSend)
             .then(data => {
                 setIsRedirect(true);
             })
