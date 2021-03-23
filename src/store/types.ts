@@ -7,9 +7,10 @@ export interface IAppState{
     }
 }
 
-export interface ICurrUserInfo{
+export interface IUserInfo{
     email: string,
     username: string,
-    image: string | null,
-    bio: string | null
+    image?: string | null,
+    bio?: string | null,
+    password?: string | null
 }

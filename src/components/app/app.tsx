@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Header from '../header/header';
 import './app.css';
 import {fetchCurrentUser as fetchCurrentUserAction, removeCurrentUser as removeCurrentUserAction} from '../../store/actions';
-import { IAppState } from '../../store/reducers/types';
+import { IAppState } from '../../store/types';
 
 interface AppProps{
     fetchCurrentUser: (token: string) => void,

@@ -8,7 +8,7 @@ import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import classes from './create-article.module.scss';
-import {IAppState} from "../../store/reducers/types";
+import {IAppState} from "../../store/types";
 import classnames from "classnames";
 
 interface CreateArticleProps{

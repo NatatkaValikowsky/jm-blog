@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import {createStore, applyMiddleware} from "redux";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
+import RouteService from "./services/route-service";
 
 import App from './components/app';
 import Articles from './layouts/articles';
@@ -30,14 +31,14 @@ ReactDOM.render(
             <CookiesProvider>
                 <App>
                     <Switch>
-                        <Route exact path="/" component={Articles} />
-                        <Route exact path="/articles" component={Articles} />
-                        <Route exact path="/articles/:slug" component={Article} />
-                        <Route exact path="/articles/:slug/edit" component={EditArticle} />
-                        <Route exact path="/sign-in" component={SignIn} />
-                        <Route exact path="/sign-up" component={SignUp} />
-                        <Route exact path="/profile" component={Profile} />
-                        <Route exact path="/new-article" component={CreateArticle} />
+                        <Route exact path={RouteService.mainRoute} component={Articles} />
+                        <Route exact path={RouteService.articlesRoute} component={Articles} />
+                        <Route exact path={RouteService.articleRoute} component={Article} />
+                        <Route exact path={RouteService.editArticleRoute} component={EditArticle} />
+                        <Route exact path={RouteService.signInRoute} component={SignIn} />
+                        <Route exact path={RouteService.signUpRoute} component={SignUp} />
+                        <Route exact path={RouteService.profileRouter} component={Profile} />
+                        <Route exact path={RouteService.createArticleRoute} component={CreateArticle} />
                     </Switch>
                 </App>
             </CookiesProvider>

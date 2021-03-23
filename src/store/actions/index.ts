@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import ApiService from '../../services/api-service';
+import { IUserInfo } from '../types';
 
 import {
     GET_CURRENT_USER_START,
@@ -29,13 +30,7 @@ export const fetchCurrentUser = (token:string) => async (dispatch : Dispatch) =>
 }
 
 export const updateCurrentUser = (data: {
-    user: {
-        email: string,
-        username: string,
-        password?: string,
-        bio? :string | null,
-        image? : string | null
-    }
+    user: IUserInfo
 }) => (dispatch: Dispatch) => {
     dispatch({
         type: UPDATE_CURRENT_USER,

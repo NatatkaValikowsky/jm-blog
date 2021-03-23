@@ -1,7 +1,9 @@
 interface userData {
     username?: string,
     email: string,
-    password: string
+    password: string,
+    bio?: string | null,
+    image?:string | null
 }
 
 interface requestData {

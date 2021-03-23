@@ -1,16 +1,14 @@
-import React, {useState} from "react";
-import { useForm } from "react-hook-form";
-import { connect } from 'react-redux';
-import { useCookies } from 'react-cookie';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import React, {useEffect, useState} from "react";
+import {useForm} from "react-hook-form";
+import {connect} from 'react-redux';
+import {useCookies} from 'react-cookie';
+import {Spin} from 'antd';
+import {LoadingOutlined} from '@ant-design/icons';
 import ApiService from '../../services/api-service';
-import {
-    updateCurrentUser as updateCurrentUserAction
-} from '../../store/actions';
+import {updateCurrentUser as updateCurrentUserAction} from '../../store/actions';
 
 import classes from "./profile.module.scss";
-import { IAppState } from '../../store/reducers/types';
+import {IAppState} from '../../store/types';
 import classnames from "classnames";
 
 interface IFormInput {
@@ -37,6 +35,11 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     const [email, setEmail] = useState('');
     const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+    const [ isLoading, setIsLoading ] = useState(true);
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, []);
 
     const onChangeUsername = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
@@ -79,7 +82,10 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
             });
     }
 
-    return (
+    return isLoading ?
+        <div className={classes["loading-block"]}>
+            <Spin indicator={antIcon}/>
+        </div> :
         <div className={classes["profile__body"]}>
             <h1 className={classes["profile__title"]}>Edit Profile</h1>
             <form className={classes["profile__form"]} onSubmit={handleSubmit(onSubmit)}>
@@ -93,11 +99,12 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
                         type="text"
                         placeholder="Username"
                         ref={register(
-                            { required: {
+                            {
+                                required: {
                                     value: true,
                                     message: "Username can't be empty"
                                 },
-                                maxLength : {
+                                maxLength: {
                                     value: 20,
                                     message: 'Your username needs to be maximum 20 characters.'
                                 },
@@ -106,12 +113,12 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
                                     message: 'Your username needs to be at least 3 characters.'
                                 }
                             })}
-                    value={
-                        username !== '' ?
-                            username :
-                            currUser ? currUser.username : ''
-                    }
-                    onChange={onChangeUsername}/>
+                        value={
+                            username !== '' ?
+                                username :
+                                currUser ? currUser.username : ''
+                        }
+                        onChange={onChangeUsername}/>
                     <span className={classes["profile__error"]}>{errors.username?.message}</span>
                 </div>
 
@@ -156,13 +163,14 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
                             {
                                 validate: {
                                     matches: value => {
-                                        if(value === '') return true;
+                                        if (value === '') return true;
                                         return (value.length > 5 && value.length < 41);
                                     },
                                 }
                             }
                         )}/>
-                    <span className={classes["profile__error"]}>{errors.password && `Password must have from 6 to 40 symbols`}</span>
+                    <span
+                        className={classes["profile__error"]}>{errors.password && `Password must have from 6 to 40 symbols`}</span>
                 </div>
 
                 <div className={classes["profile__form-group"]}>
@@ -177,7 +185,7 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
                             {
                                 validate: {
                                     matches: value => {
-                                        if(value === '') return true;
+                                        if (value === '') return true;
                                         const objRE = /(^https?:\/\/)?[a-z0-9~_\-\.]+\.[a-z]{2,9}(\/|:|\?[!-~]*)?$/i;
                                         return objRE.test(value);
                                     },
@@ -189,13 +197,12 @@ const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
 
                 <button type="submit"
                         className={classnames(classes["profile__btn"], {[classes["profile__btn--is-sending"]]: formIsSending})}>
-                        {formIsSending ?
-                            <Spin indicator={antIcon} /> :
-                            `Save`}
+                    {formIsSending ?
+                        <Spin indicator={antIcon}/> :
+                        `Save`}
                 </button>
             </form>
-        </div>
-    );
+        </div>;
 }
 
 const mapStateToProps = (state: IAppState) => ({

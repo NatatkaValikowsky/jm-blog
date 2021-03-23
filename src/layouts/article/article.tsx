@@ -8,7 +8,7 @@ import classes from "./article.module.scss";
 import likeIcon from "../../img/like-icon.svg";
 import likedIcon from "../../img/liked-icon.svg";
 import { connect } from 'react-redux';
-import {IAppState} from "../../store/reducers/types";
+import {IAppState} from "../../store/types";
 import { Link } from "react-router-dom";
 import delImg from '../../img/del-icon.svg';
 import { useCookies } from 'react-cookie';

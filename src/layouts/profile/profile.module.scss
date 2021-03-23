@@ -79,3 +79,11 @@
   background-color: rgba(0,0,0,.1);
   cursor: default;
 }
+
+.loading-block{
+  width:100%;
+  min-height: 50vh;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}

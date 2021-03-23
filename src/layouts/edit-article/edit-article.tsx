@@ -1,14 +1,14 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import { useForm } from "react-hook-form";
-import { connect } from 'react-redux';
+import {useForm} from "react-hook-form";
+import {connect} from 'react-redux';
 import classes from './edit-article.module.scss';
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import ApiService from "../../services/api-service";
-import {IAppState} from "../../store/reducers/types";
-import { Redirect } from 'react-router';
-import { useCookies } from 'react-cookie';
-import { Spin} from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import {IAppState} from "../../store/types";
+import {Redirect} from 'react-router';
+import {useCookies} from 'react-cookie';
+import {Spin} from 'antd';
+import {LoadingOutlined} from '@ant-design/icons';
 import classnames from "classnames";
 
 interface EditArticleProps{
@@ -63,6 +63,7 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const [descrState, setDescrState] = useState('');
     const [bodyState, setBodyState] = useState('');
     const [isRedirect, setIsRedirect] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
@@ -116,6 +117,7 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
                 });
 
                 setTags(formatTaglist);
+                setIsLoading(false);
             })
             .catch(error => {
                 //setHasError(true);
@@ -194,7 +196,10 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
         body,
     } = content;
 
-    return(
+    return isLoading ?
+        <div className={classes["loading-block"]}>
+            <Spin indicator={antIcon}/>
+        </div> :
         <div className={classes["edit-article__body"]}>
             <h1 className={classes["edit-article__title"]}>Edit article</h1>
             <form className={classes["edit-article__form"]} onSubmit={handleSubmit(onSubmit)}>
@@ -208,7 +213,8 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
                         type="text"
                         placeholder="Title"
                         ref={register(
-                            { required: {
+                            {
+                                required: {
                                     value: true,
                                     message: "Title is required"
                                 }
@@ -227,7 +233,8 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
                         className={classes["edit-article__input"]}
                         placeholder="Description"
                         ref={register(
-                            { required: {
+                            {
+                                required: {
                                     value: true,
                                     message: "Description is required"
                                 }
@@ -247,7 +254,8 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
                         placeholder="Text"
                         className={classes["edit-article__textarea"]}
                         ref={register(
-                            { required: {
+                            {
+                                required: {
                                     value: true,
                                     message: "Text is required"
                                 }
@@ -279,21 +287,25 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
                                     <button
                                         type="button"
                                         className={classes["edit-article__delete-tag"]}
-                                        onClick={() => {deleteTag(el.id)}}>Delete</button>{addBtn}
+                                        onClick={() => {
+                                            deleteTag(el.id)
+                                        }}>Delete
+                                    </button>
+                                    {addBtn}
                                 </div>
                             )
                         })
                     }
                 </div>
 
-                <button type="submit" className={classnames(classes["edit-article__btn"], {[classes["edit-article__btn--is-sending"]]: formIsSending})}>
+                <button type="submit"
+                        className={classnames(classes["edit-article__btn"], {[classes["edit-article__btn--is-sending"]]: formIsSending})}>
                     {formIsSending ?
-                        <Spin indicator={antIcon} /> :
+                        <Spin indicator={antIcon}/> :
                         `Send`}
                 </button>
             </form>
-        </div>
-    );
+        </div>;
 }
 
 const mapStateToProps = (state: IAppState) => ({
