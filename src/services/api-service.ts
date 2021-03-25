@@ -1,4 +1,12 @@
-import {userData, articleData, requestData} from './types';
+import {
+    userData,
+    articleData,
+    requestData,
+    ArticleDTO,
+    ArticleListDTO,
+    UserDTO,
+    ArticleRecDTO
+} from './types';
 
 type valueType = {user:userData} | {article:articleData} | null
 
@@ -41,52 +49,52 @@ class ApiService {
         }
     }
 
-    getArticles(pageNum: number) : Promise<any> {
+    getArticles(pageNum: number) : Promise<ArticleListDTO> {
         const offset : number = (pageNum - 1) * this.articlesOnPage;
         return this.sendRequest(`${this.apiBase}/articles?limit=${this.articlesOnPage}&offset=${offset}`, null, this.apiToken);
     }
 
-    getArticle(slug: string) : Promise<any> {
+    getArticle(slug: string) : Promise<ArticleRecDTO> {
         return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, this.apiToken);
     }
 
-    createUser(data: userData) : Promise<any>{
+    createUser(data: userData) : Promise<UserDTO>{
         return this.sendRequest(`${this.apiBase}/users`, {
             user: data
         }, undefined, 'post');
     }
 
-    loginUser(data:userData) : Promise<any>{
+    loginUser(data:userData) : Promise<UserDTO>{
         return this.sendRequest(`${this.apiBase}/users/login`, {
             user: data
         });
     }
 
-    getCurrentUser() : Promise<any>{
+    getCurrentUser() : Promise<UserDTO>{
         return this.sendRequest(`${this.apiBase}/user`, null, this.apiToken);
     }
 
-    updateUserData(data: userData) : Promise<any>{
+    updateUserData(data: userData) : Promise<UserDTO>{
         return this.sendRequest(`${this.apiBase}/user`, {user: data}, this.apiToken, 'put')
     }
 
-    createArticle(data: articleData) : Promise<any>{
+    createArticle(data: articleData) : Promise<ArticleRecDTO>{
         return this.sendRequest(`${this.apiBase}/articles`, {article: data}, this.apiToken);
     }
 
-    updateArticle(data: articleData, slug: string) : Promise<any> {
+    updateArticle(data: articleData, slug: string) : Promise<ArticleRecDTO> {
         return this.sendRequest(`${this.apiBase}/articles/${slug}`, {article: data}, this.apiToken, 'put');
     }
 
-    deleteArticle(slug:string) : Promise<any>{
+    deleteArticle(slug:string) : Promise<Object>{
         return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, this.apiToken, 'delete');
     }
 
-    favouriteArticle(slug: string) : Promise<any>{
+    favouriteArticle(slug: string) : Promise<ArticleRecDTO>{
         return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, this.apiToken, 'post');
     }
 
-    unfavouriteArticle(slug: string) : Promise<any>{
+    unfavouriteArticle(slug: string) : Promise<ArticleRecDTO>{
         return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, this.apiToken, 'delete');
     }
 }

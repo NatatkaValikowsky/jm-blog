@@ -42,6 +42,7 @@ const SignUp = () => {
                 }
 
                 if(data && data.errors){
+                    console.log(data.errors);
                     setServerErrors(data.errors);
                 }
             })

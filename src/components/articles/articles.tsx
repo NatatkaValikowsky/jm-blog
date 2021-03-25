@@ -9,10 +9,12 @@ import ArticlesList from "../articles-list";
 import classes from './articles.module.scss';
 import './articles.css';
 
+import { ArticleDTO } from '../../services/types';
+
 const Articles= () => {
 
     const [page, setPage] = useState(1);
-    const [articles, setArticles] = useState([]);
+    const [articles, setArticles] = useState<ArticleDTO[]|[]>([]);
     const [articlesCount, setArticlesCount] = useState(0);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const [isLoading, setIsLoading] = useState(true);
