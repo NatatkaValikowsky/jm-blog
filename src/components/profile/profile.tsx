@@ -10,23 +10,7 @@ import classes from "./profile.module.scss";
 import {IAppState} from '../../store/types';
 import classnames from "classnames";
 
-interface IFormInput {
-    username?: string,
-    email: string,
-    password?: string,
-    bio?: string | null,
-    image?:string | null
-}
-
-interface ProfileProps{
-    currUser: {
-        username: string,
-        email: string,
-        bio: string | null,
-        image: string | null
-    },
-    updateCurrentUser: (data: any) => void
-}
+import { ProfileProps, IFormInput } from './types';
 
 const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();

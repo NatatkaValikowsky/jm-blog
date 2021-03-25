@@ -6,13 +6,7 @@ import classes from './header.module.scss';
 import defaultAvatar from '../../img/user_avatar.svg';
 import createIcon from '../../img/pen.svg';
 
-interface HeaderProps {
-    currUser: {
-        username: string,
-        image: string | null
-    } | null,
-    onLogout: () => void
-}
+import { HeaderProps } from './types';
 
 const Header:React.FC<HeaderProps> = ({currUser, onLogout}) => {
 

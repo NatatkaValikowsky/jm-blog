@@ -10,18 +10,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import classes from './sign-up.module.scss';
 
-interface IFormInput {
-    username: string,
-    email: string,
-    password: string,
-    ["repeat-password"]: string,
-    agreement: boolean,
-}
-
-interface IServerErrors{
-    email: null | string[],
-    username: null | string[]
-}
+import { IFormInput, IServerErrors } from './types';
 
 const SignUp = () => {
     const { register, errors, handleSubmit, getValues } = useForm<IFormInput>();

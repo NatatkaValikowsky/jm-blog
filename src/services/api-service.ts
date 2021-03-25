@@ -1,23 +1,4 @@
-interface userData {
-    username?: string,
-    email: string,
-    password?: string,
-    bio?: string | null,
-    image?:string | null
-}
-
-interface  articleData {
-    title: string,
-    description: string,
-    body: string,
-    tagList: string[]
-}
-
-interface requestData {
-    method?: string,
-    headers: any,
-    body?:string
-}
+import {userData, articleData, requestData} from './types';
 
 type valueType = {user:userData} | {article:articleData} | null
 
@@ -69,43 +50,43 @@ class ApiService {
         return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, this.apiToken);
     }
 
-    createUser(data: userData){
+    createUser(data: userData) : Promise<any>{
         return this.sendRequest(`${this.apiBase}/users`, {
             user: data
         }, undefined, 'post');
     }
 
-    loginUser(data:userData){
+    loginUser(data:userData) : Promise<any>{
         return this.sendRequest(`${this.apiBase}/users/login`, {
             user: data
         });
     }
 
-    getCurrentUser(){
+    getCurrentUser() : Promise<any>{
         return this.sendRequest(`${this.apiBase}/user`, null, this.apiToken);
     }
 
-    updateUserData(data: userData){
+    updateUserData(data: userData) : Promise<any>{
         return this.sendRequest(`${this.apiBase}/user`, {user: data}, this.apiToken, 'put')
     }
 
-    createArticle(data: articleData){
+    createArticle(data: articleData) : Promise<any>{
         return this.sendRequest(`${this.apiBase}/articles`, {article: data}, this.apiToken);
     }
 
-    updateArticle(data: articleData, slug: string) {
+    updateArticle(data: articleData, slug: string) : Promise<any> {
         return this.sendRequest(`${this.apiBase}/articles/${slug}`, {article: data}, this.apiToken, 'put');
     }
 
-    deleteArticle(slug:string){
+    deleteArticle(slug:string) : Promise<any>{
         return this.sendRequest(`${this.apiBase}/articles/${slug}`, null, this.apiToken, 'delete');
     }
 
-    favouriteArticle(slug: string){
+    favouriteArticle(slug: string) : Promise<any>{
         return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, this.apiToken, 'post');
     }
 
-    unfavouriteArticle(slug: string){
+    unfavouriteArticle(slug: string) : Promise<any>{
         return this.sendRequest(`${this.apiBase}/articles/${slug}/favorite`, null, this.apiToken, 'delete');
     }
 }

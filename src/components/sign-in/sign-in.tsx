@@ -14,14 +14,7 @@ import { connect } from 'react-redux';
 import classes from "./sign-in.module.scss";
 import classnames from "classnames";
 
-interface IFormInput {
-    email: string,
-    password: string,
-}
-
-interface SignInProps{
-    fetchCurrentUser: () => void,
-}
+import {IFormInput, SignInProps} from './types';
 
 const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();

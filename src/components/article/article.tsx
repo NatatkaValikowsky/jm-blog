@@ -10,41 +10,13 @@ import ApiService from "../../services/api-service";
 import {cutWords} from "../../utils";
 import { Redirect } from 'react-router';
 
-interface ArticleInterface {
-    title: string,
-    slug: string,
-    author: {
-        username: string,
-        image: string
-    },
-    description: string,
-    favoritesCount: number,
-    createdAt: string,
-    tagList: Array<string>,
-    favorited:boolean
-}
+import { ArticleInterface } from '../../types';
 
-const Article:React.FC<ArticleInterface> = ({
-                     title,
-                     slug,
-                     author,
-                     description,
-                     favoritesCount,
-                     favorited,
-                     createdAt,
-                     tagList}) => {
+const Article:React.FC<ArticleInterface> = (props) => {
 
     const [cookies,] = useCookies(['Token']);
     const [isRedirect, setIsRedirect] = useState(false);
-    const [content, setContent] = useState({
-        title,
-        slug,
-        author,
-        description,
-        favoritesCount,
-        favorited,
-        createdAt,
-        tagList});
+    const [content, setContent] = useState(props);
 
     const renderTag = (element: string) => {
         return (
@@ -59,11 +31,11 @@ const Article:React.FC<ArticleInterface> = ({
         }
 
         if(!content.favorited){
-            ApiService.favouriteArticle(slug)
+            ApiService.favouriteArticle(content.slug)
                 .then(data => setContent(data.article))
                 .catch(error => alert('Error'));
         } else{
-            ApiService.unfavouriteArticle(slug)
+            ApiService.unfavouriteArticle(content.slug)
                 .then(data => setContent(data.article))
                 .catch(error => alert('Error'));
         }
@@ -88,7 +60,7 @@ const Article:React.FC<ArticleInterface> = ({
             </ul>
             <h4 className={classes["article-item__author-name"]}>{content.author.username}</h4>
             <span className={classes["article-item__publication-date"]}>{format(new Date(content.createdAt), 'MMMM dd, yyyy')}</span>
-            <img src={author.image} alt="John Doe Avatar" className={classes["article-item__author-avatar"]}/>
+            <img src={content.author.image} alt="John Doe Avatar" className={classes["article-item__author-avatar"]}/>
             <p className={classes["article-item__introtext"]}>
                 {content.description}
             </p>

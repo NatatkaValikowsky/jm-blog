@@ -10,50 +10,18 @@ import classes from './create-article.module.scss';
 import {IAppState} from "../../store/types";
 import classnames from "classnames";
 
-interface CreateArticleProps{
-    currUser: {
-        username: string,
-        email: string,
-        bio: string | null,
-        image: string | null
-    }
-}
-
-interface IFormInput {
-    title: string,
-    description: string,
-    body: string,
-    tags: Array<{
-        id: number,
-        value: string
-    }>
-}
+import { CreateArticleProps, IFormInput } from './types';
+import { initialTags } from './initial';
 
 const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IFormInput>();
     const [isRedirect, setIsRedirect] = useState(false);
     const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-    const [tags, setTags] = useState([
-        {
-            id: 1,
-            value: ''
-        },
-        {
-            id: 2,
-            value: ''
-        }
-    ]);
+    const [tags, setTags] = useState(initialTags);
 
-    if(!currUser){
-        return (
-            <Redirect to="/sign-up" />
-        );
-    }
-
-    if(isRedirect){
-        return <Redirect to="/" />
-    }
+    if(!currUser) return <Redirect to="/sign-up" />
+    if(isRedirect)return <Redirect to="/" />
 
     const onSubmit = async (formData: IFormInput) => {
 
@@ -70,10 +38,10 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
         setFormIsSending(true);
 
         ApiService.createArticle(dataToSend)
-            .then(data => {
+            .then(() => {
                 setIsRedirect(true);
             })
-            .catch(error => {
+            .catch(() => {
                 alert('Error');
             })
             .finally(() => {

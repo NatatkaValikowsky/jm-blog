@@ -2,8 +2,6 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Pagination } from 'antd';
 
-import classes from "./pagination.module.scss";
-
 interface PaginationProps {
     onPage: number,
     count: number,

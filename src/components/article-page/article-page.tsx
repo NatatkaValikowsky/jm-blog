@@ -14,60 +14,23 @@ import delImg from '../../img/del-icon.svg';
 import { useCookies } from 'react-cookie';
 import { Redirect } from 'react-router';
 import {cutWords} from "../../utils";
+
+import {ArticleProps, ParamTypes} from './types';
+
+import { contentInitial } from './initial';
+import {ArticleInterface} from "../../types";
+
 const { format: formatDate} = require('date-fns');
 
-interface ArticleProps{
-    currUser: {
-        username: string,
-        email: string,
-        bio: string | null,
-        image: string | null
-    }
-}
-
 const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
-
-    interface ArticleInterface {
-        title: string,
-        slug: string,
-        author: {
-            username: string,
-            image: string
-        },
-        description: string,
-        favoritesCount: number,
-        createdAt: string,
-        tagList: Array<string>,
-        body: string,
-        favorited: boolean
-    }
-
-    const [content, setContent] = useState<ArticleInterface>({
-        title: "",
-        slug: "",
-        author: {
-            username: "",
-            image: ""
-        },
-        description: "",
-        favoritesCount: 0,
-        createdAt: "",
-        tagList: [],
-        body: "",
-        favorited:false
-    });
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+    const [content, setContent] = useState<ArticleInterface>(contentInitial);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
     const [isDel, setIsDel] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
-    const [cookies,] = useCookies(['Token']);
-
-    interface ParamTypes {
-        slug: string
-    }
-
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const { slug } = useParams<ParamTypes>();
+    const [cookies,] = useCookies(['Token']);
 
     const renderTag = (element: string) => {
         return (
@@ -115,7 +78,6 @@ const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
         createdAt,
         description,
         body,
-        favorited
     } = content;
 
     function parseISOString(s: string) {

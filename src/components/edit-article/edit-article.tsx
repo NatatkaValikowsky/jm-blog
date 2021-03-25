@@ -9,59 +9,22 @@ import {Redirect} from 'react-router';
 import {Spin} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import classnames from "classnames";
-
-interface EditArticleProps{
-    currUser: {
-        username: string,
-        email: string,
-        bio: string | null,
-        image: string | null
-    }
-}
-
-interface IFormInput {
-    title: string,
-    description: string,
-    body: string,
-    tags: Array<{
-        id: number,
-        value: string
-    }>
-}
-
-interface ArticleInterface {
-    title: string,
-    slug: string,
-    author: {
-        username: string,
-        image: string
-    },
-    description: string,
-    favoritesCount: number,
-    createdAt: string,
-    tagList: Array<string>,
-    body: string
-}
+import { ArticleInterface, IArticleFormInput } from '../../types';
+import { EditArticleProps, ParamTypes } from './types';
+import { initialTags, initialContent } from './initial';
 
 const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
-    const { register, errors, handleSubmit} = useForm<IFormInput>();
+    const { register, errors, handleSubmit} = useForm<IArticleFormInput>();
     const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-    const [tags, setTags] = useState([
-        {
-            id: 1,
-            value: ''
-        },
-        {
-            id: 2,
-            value: ''
-        }
-    ]);
+    const [tags, setTags] = useState(initialTags);
     const [titleState, setTitleState] = useState('');
     const [descrState, setDescrState] = useState('');
     const [bodyState, setBodyState] = useState('');
     const [isRedirect, setIsRedirect] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [content, setContent] = useState<ArticleInterface>(initialContent);
+    const { slug } = useParams<ParamTypes>();
 
     const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
@@ -77,26 +40,6 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
         const value = e.currentTarget.value;
         setBodyState(value);
     }
-
-    const [content, setContent] = useState<ArticleInterface>({
-        title: "",
-        slug: "",
-        author: {
-            username: "",
-            image: ""
-        },
-        description: "",
-        favoritesCount: 0,
-        createdAt: "",
-        tagList: [],
-        body: ""
-    });
-
-    interface ParamTypes {
-        slug: string
-    }
-
-    const { slug } = useParams<ParamTypes>();
 
     const getArticle = (slug: string) => {
         ApiService.getArticle(slug)
@@ -136,7 +79,7 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
         return <Redirect to="/" />
     }
 
-    const onSubmit = async (formData: IFormInput) => {
+    const onSubmit = async (formData: IArticleFormInput) => {
 
         if(formIsSending) return;
 
