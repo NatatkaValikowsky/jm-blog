@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {useForm} from "react-hook-form";
 import {connect} from 'react-redux';
 import {Spin} from 'antd';
@@ -15,7 +15,7 @@ import useHooks from "./hooks";
 
 const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;4
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
     const {
         username, setUsername,

@@ -1,21 +1,15 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
-import {useForm} from "react-hook-form";
+import React, {ChangeEvent} from "react";
 import {connect} from 'react-redux';
-import classes from './edit-article.module.scss';
 import {useParams} from 'react-router-dom';
 import ApiService from "../../services/api-service";
 import {IAppState} from "../../store/types";
 import {Redirect} from 'react-router';
-import {Spin} from 'antd';
-import {LoadingOutlined} from '@ant-design/icons';
-import classnames from "classnames";
 import { IArticleFormInput } from '../../types';
 import { EditArticleProps, ParamTypes } from './types';
 import useHooks from "./hooks";
+import ArticleForm from "../article-form";
 
 const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
-    const { register, errors, handleSubmit} = useForm<IArticleFormInput>();
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const { slug } = useParams<ParamTypes>();
 
     const getArticle = (slug: string) => {
@@ -130,122 +124,22 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
         }));
     }
 
-    const {
-        title,
-        description,
-        body,
-    } = content;
-
-    return isLoading ?
-        <div className={classes["loading-block"]}>
-            <Spin indicator={antIcon}/>
-        </div> :
-        <div className={classes["edit-article__body"]}>
-            <h1 className={classes["edit-article__title"]}>Edit article</h1>
-            <form className={classes["edit-article__form"]} onSubmit={handleSubmit(onSubmit)}>
-
-                <div className={classes["edit-article__form-group"]}>
-                    <label className={classes["edit-article__label"]} htmlFor="title">Title</label>
-                    <input
-                        id="title"
-                        name="title"
-                        className={classes["edit-article__input"]}
-                        type="text"
-                        placeholder="Title"
-                        ref={register(
-                            {
-                                required: {
-                                    value: true,
-                                    message: "Title is required"
-                                }
-                            })}
-                        value={titleState !== '' ? titleState : title}
-                        onChange={onChangeTitle}/>
-                    <span className={classes["edit-article__error"]}>{errors.title?.message}</span>
-                </div>
-
-                <div className={classes["edit-article__form-group"]}>
-                    <label className={classes["edit-article__label"]} htmlFor="description">Short description</label>
-                    <input
-                        type="text"
-                        id="description"
-                        name="description"
-                        className={classes["edit-article__input"]}
-                        placeholder="Description"
-                        ref={register(
-                            {
-                                required: {
-                                    value: true,
-                                    message: "Description is required"
-                                }
-                            })}
-                        value={descrState !== '' ? descrState : description}
-                        onChange={onChangeDescription}/>
-                    <span className={classes["edit-article__error"]}>{errors.description?.message}</span>
-                </div>
-
-                <div className={classes["edit-article__form-group"]}>
-                    <label className={classes["edit-article__label"]} htmlFor="body">Text</label>
-                    <textarea
-                        name="body"
-                        id="body"
-                        cols={30}
-                        rows={10}
-                        placeholder="Text"
-                        className={classes["edit-article__textarea"]}
-                        ref={register(
-                            {
-                                required: {
-                                    value: true,
-                                    message: "Text is required"
-                                }
-                            })}
-                        value={bodyState !== '' ? bodyState : body}
-                        onChange={onChangeBodyText}/>
-                    <span className={classes["edit-article__error"]}>{errors.body?.message}</span>
-                </div>
-
-                <div className={classes["edit-article__form-group"]}>
-                    <label className={classes["edit-article__label"]} htmlFor="text">Tags</label>
-                    {
-                        tags.map((el, index) => {
-                            const addBtn = index === tags.length - 1 ?
-                                <button
-                                    type="button"
-                                    className={classes["edit-article__add-tag"]}
-                                    onClick={addTag}>Add tag</button> :
-                                null;
-
-                            return (
-                                <div key={el.id} className={classes["edit-article__tag-group"]}>
-                                    <input
-                                        type="text"
-                                        name={`tag-${el.id}`}
-                                        onChange={(e) => tagSet(e, el.id)}
-                                        value={el.value}
-                                        className={classes["edit-article__tag-input"]}/>
-                                    <button
-                                        type="button"
-                                        className={classes["edit-article__delete-tag"]}
-                                        onClick={() => {
-                                            deleteTag(el.id)
-                                        }}>Delete
-                                    </button>
-                                    {addBtn}
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-
-                <button type="submit"
-                        className={classnames(classes["edit-article__btn"], {[classes["edit-article__btn--is-sending"]]: formIsSending})}>
-                    {formIsSending ?
-                        <Spin indicator={antIcon}/> :
-                        `Send`}
-                </button>
-            </form>
-        </div>;
+    return <ArticleForm
+            pageTitle="Edit article"
+            onSubmit={onSubmit}
+            tags={tags}
+            addTag={addTag}
+            deleteTag={deleteTag}
+            tagSet={tagSet}
+            formIsSending={formIsSending}
+            content={content}
+            titleState={titleState}
+            onChangeTitle={onChangeTitle}
+            isLoading={isLoading}
+            descrState={descrState}
+            onChangeDescription={onChangeDescription}
+            bodyState={bodyState}
+            onChangeBodyText={onChangeBodyText}/>
 }
 
 const mapStateToProps = (state: IAppState) => ({
