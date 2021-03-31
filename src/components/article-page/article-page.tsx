@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ApiService from '../../services/api-service';
 import { useParams } from 'react-router-dom';
 import { Spin, Alert } from 'antd';
@@ -16,27 +16,14 @@ import { Redirect } from 'react-router';
 import {cutWords} from "../../utils";
 
 import {ArticleProps, ParamTypes} from './types';
-
-import { contentInitial } from './initial';
-import {ArticleInterface} from "../../types";
+import useHooks from "./hooks";
 
 const { format: formatDate} = require('date-fns');
 
 const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
-    const [content, setContent] = useState<ArticleInterface>(contentInitial);
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
-    const [isDel, setIsDel] = useState(false);
-    const [isDeleted, setIsDeleted] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const { slug } = useParams<ParamTypes>();
     const [cookies,] = useCookies(['Token']);
-
-    const renderTag = (element: string) => {
-        return (
-            <li key={element} className={classes["tags-list__tag"]}>{element}</li>
-        )
-    };
 
     const getArticle = (slug: string) => {
         ApiService.getArticle(slug)
@@ -51,6 +38,29 @@ const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
             });
     }
 
+    const {
+        content, setContent,
+        isLoading, setIsLoading,
+        hasError, setHasError,
+        isDel, setIsDel,
+        isDeleted, setIsDeleted
+    } = useHooks(getArticle, slug);
+
+    const { title,
+        favoritesCount,
+        tagList,
+        author,
+        createdAt,
+        description,
+        body,
+    } = content;
+
+    const renderTag = (element: string) => {
+        return (
+            <li key={element} className={classes["tags-list__tag"]}>{element}</li>
+        )
+    };
+
     const favouriteArticle = () =>{
         if(!content.favorited){
             ApiService.favouriteArticle(slug)
@@ -63,22 +73,6 @@ const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
         }
 
     }
-
-    useEffect(function (){
-        setIsLoading(true);
-        setHasError(false);
-        getArticle(slug);
-    }, [slug]);
-
-    const {
-        title,
-        favoritesCount,
-        tagList,
-        author,
-        createdAt,
-        description,
-        body,
-    } = content;
 
     function parseISOString(s: string) {
         if(s.length === 0) return new Date();

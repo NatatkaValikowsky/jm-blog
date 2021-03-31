@@ -15,16 +15,20 @@ import classes from "./sign-in.module.scss";
 import classnames from "classnames";
 
 import {IFormInput, SignInProps} from './types';
+import useHooks from "./hooks";
 
 const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
-    const [hasErrors,] = useState(false);
     const [, setCookie] = useCookies(['Token']);
     const [signedUp,, removeSignedUp] = useCookies(['Signed-up']);
-    const [isRedirect, setRedirect] = useState(false);
-    const [hasError, setHasError] = useState(false);
-    const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+    const {
+        hasErrors,
+        isRedirect, setRedirect,
+        hasError, setHasError,
+        formIsSending, setFormIsSending
+    } = useHooks();
 
     const onSubmit = async (formData: IFormInput) => {
 

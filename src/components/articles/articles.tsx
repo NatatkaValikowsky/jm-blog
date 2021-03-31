@@ -1,26 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ApiService from '../../services/api-service';
 import 'antd/dist/antd.css';
 import { Pagination, Spin, Alert } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import ArticlesList from "../articles-list";
+import useHooks from "./hooks";
 
 import classes from './articles.module.scss';
 import './articles.css';
 
-import { ArticleDTO } from '../../services/types';
-
 const Articles= () => {
 
-    const [page, setPage] = useState(1);
-    const [articles, setArticles] = useState<ArticleDTO[]|[]>([]);
-    const [articlesCount, setArticlesCount] = useState(0);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
 
-    const getArticles = (pageNum: number) => {
+    const getArticles = (pageNum: number) : void => {
         setIsLoading(true);
         setHasError(false);
         ApiService.getArticles(pageNum)
@@ -36,9 +30,13 @@ const Articles= () => {
             });
     }
 
-    useEffect(function (){
-        getArticles(page);
-    }, []);
+    const {
+        page, setPage,
+        articles, setArticles,
+        articlesCount, setArticlesCount,
+        isLoading, setIsLoading,
+        hasError, setHasError
+    } = useHooks(getArticles);
 
     const setPageNumber = (pageNum: number) => {
         setPage(pageNum);

@@ -11,18 +11,18 @@ import {IAppState} from '../../store/types';
 import classnames from "classnames";
 
 import { ProfileProps, IFormInput } from './types';
+import useHooks from "./hooks";
 
 const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [formIsSending, setFormIsSending] = useState(false);
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-    const [ isLoading, setIsLoading ] = useState(true);
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;4
 
-    useEffect(() => {
-        setIsLoading(false);
-    }, []);
+    const {
+        username, setUsername,
+        email, setEmail,
+        formIsSending, setFormIsSending,
+        isLoading
+    } = useHooks();
 
     const onChangeUsername = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;

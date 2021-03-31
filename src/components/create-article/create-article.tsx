@@ -11,14 +11,18 @@ import {IAppState} from "../../store/types";
 import classnames from "classnames";
 
 import { CreateArticleProps, IFormInput } from './types';
-import { initialTags } from './initial';
+import useHooks from "./hooks";
+
 
 const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IFormInput>();
-    const [isRedirect, setIsRedirect] = useState(false);
-    const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-    const [tags, setTags] = useState(initialTags);
+
+    const {
+        isRedirect, setIsRedirect,
+        formIsSending, setFormIsSending,
+        tags, setTags
+    } = useHooks();
 
     if(!currUser) return <Redirect to="/sign-up" />
     if(isRedirect)return <Redirect to="/" />

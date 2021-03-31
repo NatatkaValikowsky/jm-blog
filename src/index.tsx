@@ -31,8 +31,7 @@ ReactDOM.render(
             <CookiesProvider>
                 <App>
                     <Switch>
-                        <Route exact path={RouteService.mainRoute} component={Articles} />
-                        <Route exact path={RouteService.articlesRoute} component={Articles} />
+                        <Route exact path={[RouteService.mainRoute, RouteService.articlesRoute]} component={Articles} />
                         <Route exact path={RouteService.articleRoute} component={Article} />
                         <Route exact path={RouteService.editArticleRoute} component={EditArticle} />
                         <Route exact path={RouteService.signInRoute} component={SignIn} />

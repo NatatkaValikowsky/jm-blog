@@ -9,37 +9,14 @@ import {Redirect} from 'react-router';
 import {Spin} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import classnames from "classnames";
-import { ArticleInterface, IArticleFormInput } from '../../types';
+import { IArticleFormInput } from '../../types';
 import { EditArticleProps, ParamTypes } from './types';
-import { initialTags, initialContent } from './initial';
+import useHooks from "./hooks";
 
 const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const { register, errors, handleSubmit} = useForm<IArticleFormInput>();
-    const [formIsSending, setFormIsSending] = useState(false);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-    const [tags, setTags] = useState(initialTags);
-    const [titleState, setTitleState] = useState('');
-    const [descrState, setDescrState] = useState('');
-    const [bodyState, setBodyState] = useState('');
-    const [isRedirect, setIsRedirect] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [content, setContent] = useState<ArticleInterface>(initialContent);
     const { slug } = useParams<ParamTypes>();
-
-    const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value;
-        setTitleState(value);
-    }
-
-    const onChangeDescription = (e: React.FormEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value;
-        setDescrState(value);
-    }
-
-    const onChangeBodyText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        const value = e.currentTarget.value;
-        setBodyState(value);
-    }
 
     const getArticle = (slug: string) => {
         ApiService.getArticle(slug)
@@ -65,9 +42,31 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
             });
     }
 
-    useEffect(function (){
-        getArticle(slug);
-    }, [slug]);
+    const {
+        formIsSending, setFormIsSending,
+        tags, setTags,
+        titleState, setTitleState,
+        descrState, setDescrState,
+        bodyState, setBodyState,
+        isRedirect, setIsRedirect,
+        isLoading, setIsLoading,
+        content, setContent
+    } = useHooks(getArticle, slug);
+
+    const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value;
+        setTitleState(value);
+    }
+
+    const onChangeDescription = (e: React.FormEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value;
+        setDescrState(value);
+    }
+
+    const onChangeBodyText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.currentTarget.value;
+        setBodyState(value);
+    }
 
     if(!currUser){
         return (
