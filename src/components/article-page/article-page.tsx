@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ApiService from '../../services/api-service';
 import { useParams } from 'react-router-dom';
 import { Spin, Alert } from 'antd';
@@ -16,7 +16,8 @@ import { Redirect } from 'react-router';
 import {cutWords} from "../../utils";
 
 import {ArticleProps, ParamTypes} from './types';
-import useHooks from "./hooks";
+import {ArticleInterface} from "../../types";
+import {contentInitial} from "./initial";
 
 const { format: formatDate} = require('date-fns');
 
@@ -38,13 +39,17 @@ const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
             });
     }
 
-    const {
-        content, setContent,
-        isLoading, setIsLoading,
-        hasError, setHasError,
-        isDel, setIsDel,
-        isDeleted, setIsDeleted
-    } = useHooks(getArticle, slug);
+    const [content, setContent] = useState<ArticleInterface>(contentInitial);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
+    const [isDel, setIsDel] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
+
+    useEffect(function (){
+        setIsLoading(true);
+        setHasError(false);
+        getArticle(slug);
+    }, [slug]);
 
     const { title,
         favoritesCount,

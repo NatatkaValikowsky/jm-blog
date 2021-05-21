@@ -15,7 +15,6 @@ import classes from "./sign-in.module.scss";
 import classnames from "classnames";
 
 import {IFormInput, SignInProps} from './types';
-import useHooks from "./hooks";
 
 const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
@@ -23,12 +22,11 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
     const [signedUp,, removeSignedUp] = useCookies(['Signed-up']);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-    const {
-        hasErrors,
-        isRedirect, setRedirect,
-        hasError, setHasError,
-        formIsSending, setFormIsSending
-    } = useHooks();
+    const [hasErrors,] = useState(false);
+    const [isRedirect, setRedirect] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const [serverError, setServerError] = useState<null | string>(null);
 
     const onSubmit = async (formData: IFormInput) => {
 
@@ -38,12 +36,16 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
         setFormIsSending(true);
         ApiService.loginUser(formData)
             .then(data => {
-                if(data.user){
+                if(data && data.user){
                     const userInfo = data.user;
                     setCookie('Token', userInfo.token);
-                    fetchCurrentUser();
+                    fetchCurrentUser(data.user);
                     setRedirect(true);
                     return;
+                }
+
+                if(data && data.errors){
+                    setServerError('login or password is invalid');
                 }
             })
             .catch(error => {
@@ -126,6 +128,7 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
                             )}/>
                         <span className={classes["sing-in__error"]}>{errors.password?.message}</span>
                     </div>
+                    <span className={classes["sing-in__error"]}>{serverError}</span>
                     <span className={classes["sing-in__error"]}>{hasErrors ? `Incorrect email or password.` : null}</span>
 
                     <button type="submit"

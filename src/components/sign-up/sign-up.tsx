@@ -11,18 +11,18 @@ import { LoadingOutlined } from '@ant-design/icons';
 import classes from './sign-up.module.scss';
 
 import { IFormInput, IServerErrors } from './types';
-import useHooks from "./hooks";
 
 const SignUp = () => {
     const { register, errors, handleSubmit, getValues } = useForm<IFormInput>();
     const [, setSignedUp] = useCookies(['Signed-up']);
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-    const {
-        isRedirect, setRedirect,
-        formIsSending, setFormIsSending,
-        serverErrors, setServerErrors,
-    } = useHooks();
+    const [isRedirect, setRedirect] = useState(false);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const [serverErrors, setServerErrors] = useState<IServerErrors>({
+        email: null,
+        username: null
+    });
 
     const onSubmit = async (formData: IFormInput) => {
         if(formIsSending) return;
@@ -43,7 +43,6 @@ const SignUp = () => {
                 }
 
                 if(data && data.errors){
-                    console.log(data.errors);
                     setServerErrors(data.errors);
                 }
             })

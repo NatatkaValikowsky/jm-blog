@@ -1,23 +1,18 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, {useState} from 'react';
 import { Redirect } from 'react-router';
 import ApiService from '../../services/api-service';
 import ArticleForm from "../article-form";
 
-import {IAppState} from "../../store/types";
-
-import { CreateArticleProps, IFormInput } from './types';
-import useHooks from "./hooks";
+import {IFormInput } from './types';
+import {initialTags} from "./initial";
 
 
-const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
-    const {
-        isRedirect, setIsRedirect,
-        formIsSending, setFormIsSending,
-        tags, setTags
-    } = useHooks();
+const CreateArticle:React.FC = () => {
 
-    if(!currUser) return <Redirect to="/sign-up" />
+    const [isRedirect, setIsRedirect] = useState(false);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const [tags, setTags] = useState(initialTags);
+
     if(isRedirect)return <Redirect to="/" />
 
     const onSubmit = async (formData: IFormInput) => {
@@ -83,8 +78,4 @@ const CreateArticle:React.FC<CreateArticleProps> = ({currUser}) => {
             content={{}}/>
 }
 
-const mapStateToProps = (state: IAppState) => ({
-    currUser: state.currUserInfo
-});
-
-export default connect(mapStateToProps)(CreateArticle);
+export default CreateArticle

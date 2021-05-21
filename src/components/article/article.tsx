@@ -44,6 +44,8 @@ const Article:React.FC<ArticleInterface> = (props) => {
 
     if(isRedirect) return <Redirect to={`/sign-in`}/>
 
+    const avatar = content.author.image ? content.author.image : `https://static.productionready.io/images/smiley-cyrus.jpg`;
+
     return (
         <li key={content.slug} className={classnames(classes["articles-list__item"], classes["article-item"])}>
             <Link to={`/articles/${content.slug}`} className={classes["article-item__title"]}>{cutWords(content.title, 30)}</Link>
@@ -60,7 +62,7 @@ const Article:React.FC<ArticleInterface> = (props) => {
             </ul>
             <h4 className={classes["article-item__author-name"]}>{content.author.username}</h4>
             <span className={classes["article-item__publication-date"]}>{format(new Date(content.createdAt), 'MMMM dd, yyyy')}</span>
-            <img src={content.author.image} alt="John Doe Avatar" className={classes["article-item__author-avatar"]}/>
+            <img src={avatar} alt="John Doe Avatar" className={classes["article-item__author-avatar"]}/>
             <p className={classes["article-item__introtext"]}>
                 {content.description}
             </p>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {connect} from 'react-redux';
 import {Spin} from 'antd';
@@ -11,18 +11,19 @@ import {IAppState} from '../../store/types';
 import classnames from "classnames";
 
 import { ProfileProps, IFormInput } from './types';
-import useHooks from "./hooks";
 
 const Profile:React.FC<ProfileProps> = ({currUser, updateCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-    const {
-        username, setUsername,
-        email, setEmail,
-        formIsSending, setFormIsSending,
-        isLoading
-    } = useHooks();
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [formIsSending, setFormIsSending] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, []);
 
     const onChangeUsername = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;

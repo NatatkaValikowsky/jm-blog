@@ -1,15 +1,13 @@
-import React, {ChangeEvent} from "react";
-import {connect} from 'react-redux';
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
 import ApiService from "../../services/api-service";
-import {IAppState} from "../../store/types";
 import {Redirect} from 'react-router';
-import { IArticleFormInput } from '../../types';
-import { EditArticleProps, ParamTypes } from './types';
-import useHooks from "./hooks";
+import {ArticleInterface, IArticleFormInput} from '../../types';
+import { ParamTypes } from './types';
 import ArticleForm from "../article-form";
+import {initialContent, initialTags} from "./initial";
 
-const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
+const EditArticle:React.FC = () => {
     const { slug } = useParams<ParamTypes>();
 
     const getArticle = (slug: string) => {
@@ -36,16 +34,18 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
             });
     }
 
-    const {
-        formIsSending, setFormIsSending,
-        tags, setTags,
-        titleState, setTitleState,
-        descrState, setDescrState,
-        bodyState, setBodyState,
-        isRedirect, setIsRedirect,
-        isLoading, setIsLoading,
-        content, setContent
-    } = useHooks(getArticle, slug);
+    const [formIsSending, setFormIsSending] = useState(false);
+    const [tags, setTags] = useState(initialTags);
+    const [titleState, setTitleState] = useState('');
+    const [descrState, setDescrState] = useState('');
+    const [bodyState, setBodyState] = useState('');
+    const [isRedirect, setIsRedirect] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [content, setContent] = useState<ArticleInterface>(initialContent);
+
+    useEffect(function (){
+        getArticle(slug);
+    }, [slug]);
 
     const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
@@ -60,12 +60,6 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
     const onChangeBodyText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.currentTarget.value;
         setBodyState(value);
-    }
-
-    if(!currUser){
-        return (
-            <Redirect to="/sign-up" />
-        );
     }
 
     if(isRedirect){
@@ -142,8 +136,4 @@ const EditArticle:React.FC<EditArticleProps> = ({currUser}) => {
             onChangeBodyText={onChangeBodyText}/>
 }
 
-const mapStateToProps = (state: IAppState) => ({
-    currUser: state.currUserInfo
-});
-
-export default connect(mapStateToProps)(EditArticle);
+export default EditArticle;

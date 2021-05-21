@@ -17,6 +17,8 @@ import Profile from "./components/profile";
 import CreateArticle from "./components/create-article";
 import EditArticle from "./components/edit-article";
 
+import PrivateRoute from "./components/private-route";
+
 import RootReducer from './store/reducers';
 
 const middlewares = [thunk];
@@ -31,13 +33,35 @@ ReactDOM.render(
             <CookiesProvider>
                 <App>
                     <Switch>
-                        <Route exact path={[RouteService.mainRoute, RouteService.articlesRoute]} component={Articles} />
-                        <Route exact path={RouteService.articleRoute} component={Article} />
-                        <Route exact path={RouteService.editArticleRoute} component={EditArticle} />
-                        <Route exact path={RouteService.signInRoute} component={SignIn} />
-                        <Route exact path={RouteService.signUpRoute} component={SignUp} />
-                        <Route exact path={RouteService.profileRouter} component={Profile} />
-                        <Route exact path={RouteService.createArticleRoute} component={CreateArticle} />
+
+                        <Route exact path={[RouteService.mainRoute, RouteService.articlesRoute]}>
+                            <Articles />
+                        </Route>
+
+                        <Route exact path={RouteService.articleRoute}>
+                            <Article />
+                        </Route>
+
+                        <PrivateRoute path={RouteService.editArticleRoute}>
+                            <EditArticle />
+                        </PrivateRoute>
+
+                        <Route exact path={RouteService.signInRoute}>
+                            <SignIn />
+                        </Route>
+
+                        <Route exact path={RouteService.signUpRoute}>
+                            <SignUp />
+                        </Route>
+
+                        <PrivateRoute path={RouteService.profileRouter}>
+                            <Profile />
+                        </PrivateRoute>
+
+                        <PrivateRoute path={RouteService.createArticleRoute}>
+                            <CreateArticle />
+                        </PrivateRoute>
+
                     </Switch>
                 </App>
             </CookiesProvider>

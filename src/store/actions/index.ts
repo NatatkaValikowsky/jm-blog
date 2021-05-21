@@ -10,23 +10,30 @@ import {
     UPDATE_CURRENT_USER
 } from "../constants";
 
-export const fetchCurrentUser = () => async (dispatch : Dispatch) => {
+export const fetchCurrentUser = (userData ? : any) => async (dispatch : Dispatch) => {
     dispatch({type: GET_CURRENT_USER_START});
 
-    ApiService.getCurrentUser()
-        .then(data => {
-            if(data.user){
-                dispatch({
-                    type: GET_CURRENT_USER_SUCCESS,
-                    payload: data.user
-                });
-            }
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_CURRENT_USER_FAILURE
-            });
+    if(userData){
+        dispatch({
+            type: GET_CURRENT_USER_SUCCESS,
+            payload: userData
         });
+    } else{
+        ApiService.getCurrentUser()
+            .then(data => {
+                if(data.user){
+                    dispatch({
+                        type: GET_CURRENT_USER_SUCCESS,
+                        payload: data.user
+                    });
+                }
+            })
+            .catch(error => {
+                dispatch({
+                    type: GET_CURRENT_USER_FAILURE
+                });
+            });
+    }
 }
 
 export const updateCurrentUser = (data: {

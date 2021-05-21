@@ -4,5 +4,5 @@ export interface IFormInput {
 }
 
 export interface SignInProps{
-    fetchCurrentUser: () => void,
+    fetchCurrentUser: (userData: any) => void,
 }
