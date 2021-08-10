@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux';
 import ApiService from '../../services/api-service';
 import { IUserInfo } from '../types';
+import {IUserData} from "./types";
 
 import {
     GET_CURRENT_USER_START,
@@ -10,7 +11,7 @@ import {
     UPDATE_CURRENT_USER
 } from "../constants";
 
-export const fetchCurrentUser = (userData ? : any) => async (dispatch : Dispatch) => {
+export const fetchCurrentUser = (userData ? : IUserData) => async (dispatch : Dispatch) => {
     dispatch({type: GET_CURRENT_USER_START});
 
     if(userData){
