@@ -1,4 +1,19 @@
-export interface ArticleInterface {
+export interface IArticle {
+    title: string,
+    slug: string,
+    author: {
+        username: string,
+        image: string
+    },
+    description: string,
+    favoritesCount: number,
+    createdAt: string,
+    tagList: Array<string>,
+    favorited?:boolean,
+    body:string
+}
+
+export interface IArticle {
     title: string,
     slug: string,
     author: {
@@ -14,7 +29,7 @@ export interface ArticleInterface {
 }
 
 export interface ArticlesListProps {
-    articles: Array<ArticleInterface>
+    articles: Array<IArticle>
 }
 
 export interface IArticleFormInput {

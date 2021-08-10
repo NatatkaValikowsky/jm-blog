@@ -10,9 +10,10 @@ import ApiService from "../../services/api-service";
 import {cutWords} from "../../utils";
 import { Redirect } from 'react-router';
 
-import { ArticleInterface } from '../../types';
+import { IArticle } from '../../types';
+import RouteService from '../../services/route-service';
 
-const Article:React.FC<ArticleInterface> = (props) => {
+const Article:React.FC<IArticle> = (props) => {
 
     const [cookies,] = useCookies(['Token']);
     const [isRedirect, setIsRedirect] = useState(false);
@@ -42,13 +43,13 @@ const Article:React.FC<ArticleInterface> = (props) => {
 
     }
 
-    if(isRedirect) return <Redirect to={`/sign-in`}/>
+    if(isRedirect) return <Redirect to={RouteService.signInLink}/>
 
     const avatar = content.author.image ? content.author.image : `https://static.productionready.io/images/smiley-cyrus.jpg`;
 
     return (
         <li key={content.slug} className={classnames(classes["articles-list__item"], classes["article-item"])}>
-            <Link to={`/articles/${content.slug}`} className={classes["article-item__title"]}>{cutWords(content.title, 30)}</Link>
+            <Link to={RouteService.articleLink(content.slug)} className={classes["article-item__title"]}>{cutWords(content.title, 30)}</Link>
             <div
                 className={classnames(classes["article-item__like-block"], classes["like-block"])}
                 onClick={favouriteArticle}>

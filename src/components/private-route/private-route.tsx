@@ -5,12 +5,13 @@ import {IAppState} from "../../store/types";
 import {connect} from "react-redux";
 
 import {PrivateRoutesProps} from './types';
+import RouteService from '../../services/route-service';
 
 const PrivateRoute:React.FC<PrivateRoutesProps> = ({children, path, currUser}) => {
     return (
         <Route exact
             path={path}
-            render={() => currUser ? <>{children}</> : <Redirect to="/sign-in"/>
+            render={() => currUser ? <>{children}</> : <Redirect to={RouteService.signInLink} />
             }
         />
     )

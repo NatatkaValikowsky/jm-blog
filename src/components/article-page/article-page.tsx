@@ -16,8 +16,9 @@ import { Redirect } from 'react-router';
 import {cutWords} from "../../utils";
 
 import {ArticleProps, ParamTypes} from './types';
-import {ArticleInterface} from "../../types";
+import {IArticle} from "../../types";
 import {contentInitial} from "./initial";
+import RouteService from '../../services/route-service';
 
 const { format: formatDate} = require('date-fns');
 
@@ -39,7 +40,7 @@ const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
             });
     }
 
-    const [content, setContent] = useState<ArticleInterface>(contentInitial);
+    const [content, setContent] = useState<IArticle>(contentInitial);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
     const [isDel, setIsDel] = useState(false);
@@ -154,7 +155,7 @@ const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
                                 </div>
                             }
                         </div>
-                        <Link className={classes["buttons-block__edit"]} to={`/articles/${slug}/edit`}>Edit</Link>
+                        <Link className={classes["buttons-block__edit"]} to={RouteService.editArticleLink(slug)}>Edit</Link>
                     </div>
                 }
             </div>
@@ -165,7 +166,7 @@ const ArticlePage:React.FC<ArticleProps> = ({currUser}) => {
             </div>
         </div>;
 
-    if(isDeleted) return <Redirect to='/'/>
+    if(isDeleted) return <Redirect to={RouteService.mainRouteLink}/>
 
     return (
         <>

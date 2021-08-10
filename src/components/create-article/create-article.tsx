@@ -5,7 +5,7 @@ import ArticleForm from "../article-form";
 
 import {IFormInput } from './types';
 import {initialTags} from "./initial";
-
+import RouteService from '../../services/route-service'
 
 const CreateArticle:React.FC = () => {
 
@@ -13,7 +13,7 @@ const CreateArticle:React.FC = () => {
     const [formIsSending, setFormIsSending] = useState(false);
     const [tags, setTags] = useState(initialTags);
 
-    if(isRedirect)return <Redirect to="/" />
+    if(isRedirect)return <Redirect to={RouteService.mainRouteLink} />
 
     const onSubmit = async (formData: IFormInput) => {
 

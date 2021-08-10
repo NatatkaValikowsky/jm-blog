@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
@@ -7,26 +7,23 @@ import defaultAvatar from '../../img/user_avatar.svg';
 import createIcon from '../../img/pen.svg';
 
 import { HeaderProps } from './types';
+import RouteService from '../../services/route-service';
 
 const Header:React.FC<HeaderProps> = ({currUser, onLogout}) => {
 
-    useEffect(()=> {
-        console.log('Обновление шапки');
-    });
-
     const userBlock =
         <>
-            <Link to={`/sign-in`} className={classes["profile-block__sign-in"]}>Sign In</Link>
-            <Link to={`/sign-up`} className={classes["profile-block__sign-up"]}>Sign Up</Link>
+            <Link to={RouteService.signInLink} className={classes["profile-block__sign-in"]}>Sign In</Link>
+            <Link to={RouteService.signUpLink} className={classes["profile-block__sign-up"]}>Sign Up</Link>
         </>;
 
     const userAuthBlock =
         <>
-            <Link to={`/new-article`} className={classes["profile-block__create_article"]}>
+            <Link to={RouteService.createArticleLink} className={classes["profile-block__create_article"]}>
                 <img className={classes["profile-block__create-article-icon"]} src={createIcon} alt="Create new erticle"/>
                 <span className={classes["profile-block__create-article-text"]}>Create article</span>
             </Link>
-            <Link to={`/profile`} className={classes["profile-block__user-info"]}>
+            <Link to={RouteService.profileLink} className={classes["profile-block__user-info"]}>
                 <span className={classes["profile-block__user-name"]}>{ currUser ? currUser.username : null}</span>
                 <img className={classes["profile-block__user-image"]} src={currUser && currUser.image ? currUser.image : defaultAvatar} alt="Аватар текущего пользователя"/>
             </Link>
@@ -37,7 +34,7 @@ const Header:React.FC<HeaderProps> = ({currUser, onLogout}) => {
     return (
         <header className={classes["header"]}>
             <div className={classes["logo"]}>
-                <Link to={`/`} className={classes["logo__link"]}>
+                <Link to={RouteService.mainRouteLink} className={classes["logo__link"]}>
                     Realworld Blog
                 </Link>
             </div>

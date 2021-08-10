@@ -2,10 +2,11 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
 import ApiService from "../../services/api-service";
 import {Redirect} from 'react-router';
-import {ArticleInterface, IArticleFormInput} from '../../types';
+import {IArticle, IArticleFormInput} from '../../types';
 import { ParamTypes } from './types';
 import ArticleForm from "../article-form";
 import {initialContent, initialTags} from "./initial";
+import RouteService from '../../services/route-service';
 
 const EditArticle:React.FC = () => {
     const { slug } = useParams<ParamTypes>();
@@ -41,7 +42,7 @@ const EditArticle:React.FC = () => {
     const [bodyState, setBodyState] = useState('');
     const [isRedirect, setIsRedirect] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [content, setContent] = useState<ArticleInterface>(initialContent);
+    const [content, setContent] = useState<IArticle>(initialContent);
 
     useEffect(function (){
         getArticle(slug);
@@ -63,7 +64,7 @@ const EditArticle:React.FC = () => {
     }
 
     if(isRedirect){
-        return <Redirect to="/" />
+        return <Redirect to={RouteService.mainRouteLink} />
     }
 
     const onSubmit = async (formData: IArticleFormInput) => {

@@ -18,4 +18,15 @@ interface IGetCurrentUserActionSuccess{
     }
 }
 
+export interface IUserData{
+    bio: string | null,
+    createdAt: string,
+    email: string,
+    id: number,
+    image: string | null,
+    token: string,
+    updateAt: string,
+    username: string
+}
+
 export type GetCurrentUserActionTypes = IGetCurrentUserActionStart | IGetCurrentUserActionSuccess;
