@@ -2,7 +2,6 @@ import {
     userData,
     articleData,
     requestData,
-    ArticleDTO,
     ArticleListDTO,
     UserDTO,
     ArticleRecDTO
@@ -11,8 +10,8 @@ import {
 type valueType = {user:userData} | {article:articleData} | null
 
 class ApiService {
-    apiBase = 'https://conduit.productionready.io/api';
-    apiKey = '1a312659d57cbdc19acab57a112fc99f';
+    apiBase = process.env.REACT_APP_API_BASE;
+    apiKey = process.env.REACT_APP_API_KEY;
 
     public articlesOnPage = 5;
 
@@ -22,7 +21,7 @@ class ApiService {
         this.apiToken = token;
     }
 
-    async sendRequest(url: string, value? : valueType, token?: string, method?: string): Promise<any> {
+    async sendRequest<T>(url: string, value? : valueType, token?: string, method?: string): Promise<T> {
 
         const headers  = new Headers({'Content-Type': 'application/json;charset=utf-8'});
 
