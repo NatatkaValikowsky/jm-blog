@@ -6,6 +6,7 @@ import {Spin} from "antd";
 import {useForm} from "react-hook-form";
 import {IFormInput} from "../create-article/types";
 import { LoadingOutlined } from '@ant-design/icons';
+import {titleValidation, descriptionValidation, bodyValidation} from './validationSchemas';
 
 interface ArticleFormProps {
     pageTitle: string,
@@ -71,12 +72,7 @@ const ArticleForm:React.FC<ArticleFormProps> = ({
                         className={classes["article-form__input"]}
                         type="text"
                         placeholder="Title"
-                        ref={register(
-                            { required: {
-                                    value: true,
-                                    message: "Title is required"
-                                }
-                            })}
+                        ref={register(titleValidation)}
                         value={titleState !== '' ? titleState : title}
                         onChange={onChangeTitle}/>
                     <span className={classes["article-form__error"]}>{errors.title?.message}</span>
@@ -90,12 +86,7 @@ const ArticleForm:React.FC<ArticleFormProps> = ({
                         name="description"
                         className={classes["article-form__input"]}
                         placeholder="Description"
-                        ref={register(
-                            { required: {
-                                    value: true,
-                                    message: "Description is required"
-                                }
-                            })}
+                        ref={register(descriptionValidation)}
                         value={descrState !== '' ? descrState : description}
                         onChange={onChangeDescription}/>
                     <span className={classes["article-form__error"]}>{errors.description?.message}</span>
@@ -110,12 +101,7 @@ const ArticleForm:React.FC<ArticleFormProps> = ({
                         rows={10}
                         placeholder="Text"
                         className={classes["article-form__textarea"]}
-                        ref={register(
-                            { required: {
-                                    value: true,
-                                    message: "Text is required"
-                                }
-                            })}
+                        ref={register(bodyValidation)}
                         value={bodyState !== '' ? bodyState : body}
                         onChange={onChangeBodyText}/>
                     <span className={classes["article-form__error"]}>{errors.body?.message}</span>

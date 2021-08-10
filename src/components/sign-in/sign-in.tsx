@@ -15,6 +15,8 @@ import classes from "./sign-in.module.scss";
 import classnames from "classnames";
 
 import {IFormInput, SignInProps} from './types';
+import RouteService from '../../services/route-service';
+import {emailValidation, passwordValidation} from "./validationSchemas";
 
 const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
     const { register, errors, handleSubmit } = useForm<IFormInput>();
@@ -56,7 +58,7 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
             });
     }
 
-    if(isRedirect) return <Redirect to='/'/>
+    if(isRedirect) return <Redirect to={RouteService.mainRouteLink}/>
 
     const error = hasError ?
         <div className={classes["error-block"]}>
@@ -96,18 +98,7 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
                             className={classes["sign-in__input"]}
                             type="email"
                             placeholder="Email address"
-                            ref={register(
-                                {
-                                    required: {
-                                        value: true,
-                                        message: "Email is required"
-                                    },
-                                    pattern: {
-                                        value: /.+@.+\..+/i,
-                                        message: "Invalid Email address"
-                                    }
-                                }
-                            )}/>
+                            ref={register(emailValidation)}/>
                         <span className={classes["sing-in__error"]}>{errors.email?.message}</span>
                     </div>
                     <div className={classes["sign-in__form-group"]}>
@@ -118,14 +109,7 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
                             className={classes["sign-in__input"]}
                             type="password"
                             placeholder="Password"
-                            ref={register(
-                                {
-                                    required: {
-                                        value: true,
-                                        message: "Password can't be empty"
-                                    }
-                                }
-                            )}/>
+                            ref={register(passwordValidation)}/>
                         <span className={classes["sing-in__error"]}>{errors.password?.message}</span>
                     </div>
                     <span className={classes["sing-in__error"]}>{serverError}</span>
@@ -139,7 +123,7 @@ const SignIn:React.FC<SignInProps> = ({fetchCurrentUser}) => {
                             `Login`}
 
                     </button>
-                    <span className={classes["sign-in__sign-in-text"]}>Don’t have an account? <Link to={`/sign-up`} className={classes["sign-in__sign-up-link"]}>Sign Up.</Link></span>
+                    <span className={classes["sign-in__sign-in-text"]}>Don’t have an account? <Link to={RouteService.signUpLink} className={classes["sign-in__sign-up-link"]}>Sign Up.</Link></span>
                 </form>
             </div>
         </>

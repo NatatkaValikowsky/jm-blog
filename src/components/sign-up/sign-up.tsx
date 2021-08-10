@@ -11,6 +11,8 @@ import { LoadingOutlined } from '@ant-design/icons';
 import classes from './sign-up.module.scss';
 
 import { IFormInput, IServerErrors } from './types';
+import RouteService from '../../services/route-service';
+import {agreementValidation, emailValidation, passwordValidation, usernameValidation} from "./validationSchemas";
 
 const SignUp = () => {
     const { register, errors, handleSubmit, getValues } = useForm<IFormInput>();
@@ -55,7 +57,7 @@ const SignUp = () => {
 
     }
 
-    if(isRedirect) return <Redirect to='/sign-in'/>
+    if(isRedirect) return <Redirect to={RouteService.signInLink}/>
 
     const emailErrors = serverErrors.email ?
         serverErrors.email.map(el => <Alert
@@ -92,20 +94,7 @@ const SignUp = () => {
                             className={classnames(classes["sign-up__input"], errors.username ? classes["sign-up__input-error"] : '')}
                             type="text"
                             placeholder="Username"
-                            ref={register(
-                                { required: {
-                                        value: true,
-                                        message: "Username is required"
-                                    },
-                                    maxLength : {
-                                        value: 20,
-                                        message: 'Your username needs to be maximum 20 characters.'
-                                    },
-                                    minLength: {
-                                        value: 3,
-                                        message: 'Your username needs to be at least 3 characters.'
-                                    }
-                                })}/>
+                            ref={register(usernameValidation)}/>
                         <span className={classes["sing-up__error"]}>{errors.username?.message}</span>
                     </div>
 
@@ -117,18 +106,7 @@ const SignUp = () => {
                             className={classnames(classes["sign-up__input"], errors.email ? classes["sign-up__input-error"] : '')}
                             type="email"
                             placeholder="Email address"
-                            ref={register(
-                                {
-                                    required: {
-                                        value: true,
-                                        message: "Email is required"
-                                    },
-                                    pattern: {
-                                        value: /.+@.+\..+/i,
-                                        message: "Invalid Email address"
-                                    }
-                                }
-                            )}/>
+                            ref={register(emailValidation)}/>
                         <span className={classes["sing-up__error"]}>{errors.email?.message}</span>
                     </div>
 
@@ -140,22 +118,7 @@ const SignUp = () => {
                             className={classnames(classes["sign-up__input"], errors.password ? classes["sign-up__input-error"] : '')}
                             type="password"
                             placeholder="Password"
-                            ref={register(
-                                {
-                                    required: {
-                                        value: true,
-                                        message: "Password is required"
-                                    },
-                                    minLength: {
-                                        value: 8,
-                                        message: "Your password needs to be at least 8 characters."
-                                    },
-                                    maxLength: {
-                                        value: 40,
-                                        message: "Your password needs to be maximum 40 characters."
-                                    }
-                                }
-                            )}/>
+                            ref={register(passwordValidation)}/>
                         <span className={classes["sing-up__error"]}>{errors.password?.message}</span>
                     </div>
 
@@ -183,14 +146,7 @@ const SignUp = () => {
                             id="agreement_checkbox"
                             type="checkbox"
                             className={classes["sign-up__checkbox"]}
-                            ref={register(
-                                {
-                                    required: {
-                                        value: true,
-                                        message: "Must be checked."
-                                    }
-                                }
-                            )}
+                            ref={register(agreementValidation)}
                             onChange={()=>{}}/>
                         <label className={classes["sign-up__agreement-label"]} htmlFor="agreement_checkbox">I agree to the processing of my personal information</label>
                         <span className={classes["sing-up__error"]}>{errors.agreement?.message}</span>
@@ -201,7 +157,7 @@ const SignUp = () => {
                             <Spin indicator={antIcon} /> :
                             `Create`}
                     </button>
-                    <span className={classes["sign-up__sign-in-text"]}>Already have an account? <Link to={`/sign-in`} className={classes["sign-up__sign-in-link"]}>Sign In.</Link></span>
+                    <span className={classes["sign-up__sign-in-text"]}>Already have an account? <Link to={RouteService.signInLink} className={classes["sign-up__sign-in-link"]}>Sign In.</Link></span>
                 </form>
             </div>
         </>
